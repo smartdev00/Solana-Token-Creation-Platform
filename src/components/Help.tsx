@@ -19,7 +19,7 @@ const Help = () => {
           );
         })}
       </ol>
-      <div className='text-sm md:text-base text-gray-300 border-t space-y-2 pt-3 mt-3'>
+      <div className='text-sm md:text-base text-gray-300 border-t border-gray-700 space-y-2 pt-3 mt-3'>
         <p>
           The cost of creating the Token is <span className=' text-cyan-400 font-medium'>0.1 SOL</span>, which includes
           all fees needed for the SPL Token creation.
