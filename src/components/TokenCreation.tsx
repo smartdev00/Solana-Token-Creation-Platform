@@ -10,6 +10,8 @@ import ImageUpload from './ImageUpload';
 import { TokenMetaDataType } from '@/lib/types';
 import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const TokenCreation = () => {
   const [currentProgress, setCurrentProgress] = useState<number>(1);
@@ -24,6 +26,7 @@ const TokenCreation = () => {
     mintable: true,
     updateable: true,
   });
+  const { publicKey } = useWallet();
 
   function handleNextOrCreateClick() {
     if (currentProgress < 3) {
@@ -37,8 +40,25 @@ const TokenCreation = () => {
       <Progress currentProgress={currentProgress} />
       <GradientBorderCard>
         <div className='space-y-6'>
-          {/* Step I */}
-          {currentProgress === 1 && (
+          {!!!publicKey && (
+            <div className='text-center py-2'>
+              <p className='text-gray-300 mb-3'>Please connect your wallet to continue</p>
+              <WalletMultiButton
+                style={{
+                  backgroundImage: 'linear-gradient(to right, #06b6d4, #8b5cf6)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  padding: '.01rem 2rem',
+                  borderRadius: '.5rem',
+                }}
+              >
+                Select Wallet
+              </WalletMultiButton>
+            </div>
+          )}
+
+          {/* Progress I */}
+          {!!publicKey && currentProgress === 1 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
                 <TextField
@@ -60,8 +80,8 @@ const TokenCreation = () => {
             </div>
           )}
 
-          {/* Step II */}
-          {currentProgress === 2 && (
+          {/* Progress II */}
+          {!!publicKey && currentProgress === 2 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
                 <TextField
@@ -95,8 +115,8 @@ const TokenCreation = () => {
             </div>
           )}
 
-          {/* Step III */}
-          {currentProgress === 3 && (
+          {/* Progress III */}
+          {!!publicKey && currentProgress === 3 && (
             <div>
               <div className='space-y-4'>
                 <TextField
@@ -150,30 +170,34 @@ const TokenCreation = () => {
           )}
 
           {/* Back, Next and Create Token Buttons */}
-          <div className='w-full flex flex-1 justify-between pt-4'>
-            {currentProgress > 1 ? (
-              <GradientBorderButton onClick={() => setCurrentProgress(currentProgress - 1)}>Back</GradientBorderButton>
-            ) : (
-              <div />
-            )}
-            <GradientButton
-              className='justify-self-end'
-              onClick={handleNextOrCreateClick}
-              disabled={
-                (currentProgress === 1 &&
-                  (!!tokenMetaData.name === false ||
-                    !!tokenMetaData.symbol === false ||
-                    !!tokenMetaData.logo === false)) ||
-                (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false)) ||
-                (currentProgress === 3 &&
-                  tokenMetaData.enableCreator === true &&
-                  (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false))
-              }
-            >
-              {currentProgress === 3 ? 'Create Token' : 'Next'}
-              <ChevronRight width={16} height={16} />
-            </GradientButton>
-          </div>
+          {!!publicKey && (
+            <div className='w-full flex flex-1 justify-between pt-4'>
+              {currentProgress > 1 ? (
+                <GradientBorderButton onClick={() => setCurrentProgress(currentProgress - 1)}>
+                  Back
+                </GradientBorderButton>
+              ) : (
+                <div />
+              )}
+              <GradientButton
+                className='justify-self-end'
+                onClick={handleNextOrCreateClick}
+                disabled={
+                  (currentProgress === 1 &&
+                    (!!tokenMetaData.name === false ||
+                      !!tokenMetaData.symbol === false ||
+                      !!tokenMetaData.logo === false)) ||
+                  (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false)) ||
+                  (currentProgress === 3 &&
+                    tokenMetaData.enableCreator === true &&
+                    (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false))
+                }
+              >
+                {currentProgress === 3 ? 'Create Token' : 'Next'}
+                <ChevronRight width={16} height={16} />
+              </GradientButton>
+            </div>
+          )}
         </div>
       </GradientBorderCard>
     </div>
