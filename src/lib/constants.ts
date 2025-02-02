@@ -1,8 +1,5 @@
-export type FAQType = {
-  id: number;
-  question: string;
-  answer: string;
-};
+import { Coins, Lock, Pencil } from 'lucide-react';
+import { FAQType, HelpType, RevokeAuthorityType } from './types';
 
 export const faqs: FAQType[] = [
   {
@@ -37,11 +34,6 @@ export const faqs: FAQType[] = [
   },
 ];
 
-export type HelpType = {
-  id: number;
-  text: string;
-};
-
 export const helps: HelpType[] = [
   { id: 1, text: 'Connect your Solana wallet.' },
   { id: 2, text: 'Write the name you want for your Token.' },
@@ -51,4 +43,31 @@ export const helps: HelpType[] = [
   { id: 6, text: 'Upload the image for your token (PNG).' },
   { id: 7, text: 'Put the supply of your Token.' },
   { id: 8, text: 'Click on Create, accept the transaction, and wait until your token is ready.' },
+];
+
+export const revokeAuthorityItems: RevokeAuthorityType[] = [
+  {
+    id: 0,
+    title: 'Revoke Freeze',
+    content: 'Freeze Authority allows you to freeze token accounts of holders.',
+    price: 0.1,
+    logo: Lock,
+    type: 'freezeable'
+  },
+  {
+    id: 1,
+    title: 'Revoke Mint',
+    content: 'Mint Authority allows you to mint more supply of your token.',
+    price: 0.1,
+    logo: Coins,
+    type: 'mintable'
+  },
+  {
+    id: 2,
+    title: 'Revoke Update',
+    content: 'Update Authority allows you to update the token metadata about your token.',
+    price: 0.1,
+    logo: Pencil,
+    type: 'updateable'
+  },
 ];

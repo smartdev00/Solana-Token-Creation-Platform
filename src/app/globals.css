@@ -68,6 +68,11 @@ body {
   box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 0 40px rgba(139, 92, 246, 0.1);
 }
 
+.custom-mask {
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
+  mask-composite: exclude !important;
+}
+
 /* .form-card:before {
   content: '';
   position: absolute;

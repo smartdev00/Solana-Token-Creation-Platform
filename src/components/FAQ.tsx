@@ -1,8 +1,9 @@
 'use client';
 
 import { Plus } from 'lucide-react';
-import { FAQType, faqs } from '@/constants/constants';
+import { faqs } from '@/lib/constants';
 import { Dispatch, SetStateAction, useState } from 'react';
+import { FAQType } from '@/lib/types';
 
 const FAQItem = ({
   content,

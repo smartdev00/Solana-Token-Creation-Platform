@@ -1,4 +1,4 @@
-import { helps } from '@/constants/constants';
+import { helps } from '@/lib/constants';
 
 const Help = () => {
   return (
