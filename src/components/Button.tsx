@@ -71,11 +71,14 @@ export const SelectButton = ({
 }) => {
   return (
     <button
-      className={`${
-        selected
-          ? 'border-cyan-500 text-cyan-500 bg-gradient-to-r from-cyan-500/30 to-purple-500/20'
-          : ' border-gray-400 text-gray-400 bg-main/80'
-      } border px-4 py-2 text-sm rounded-lg mt-4 w-full`}
+      className={cn(
+        `${
+          selected
+            ? 'border-cyan-500 text-cyan-500 bg-gradient-to-r from-cyan-500/30 to-purple-500/20'
+            : 'border-gray-400 text-gray-400 bg-main/80'
+        }`,
+        `border px-4 py-2 text-sm rounded-lg mt-4 w-full transition-all duration-300`
+      )}
       onClick={onClick}
     >
       {children}
@@ -89,7 +92,7 @@ export const ToggleButton = ({ selected, onClick }: { selected?: boolean; onClic
       className={cn(
         `${selected ? 'bg-cyan-400' : 'bg-gray-700'}`,
         `relative inline-flex h-6 w-11 flex-shrink-0 p-0.5 bg-clip-padding cursor-pointer rounded-full`,
-        `transition-colors duration-200 ease-in-out shadow-[0_0_10px_rgba(6,182,212,.3)]`,
+        `transition-colors duration-200 ease-in-out shadow-[0_0_10px_rgba(6,182,212,.3)]`
         // 'before:absolute before:-top-1 before:-bottom-0 before:-right-1 before:-left-1 before:rounded-full before:p-[1px] before:opacity-20',
         // 'before:bg-gradient-to-r before:from-gray-700 before:to-[#8b5cf6] before:shadow-[0_0_15px_rgba(6,182,212,.5)] '
       )}

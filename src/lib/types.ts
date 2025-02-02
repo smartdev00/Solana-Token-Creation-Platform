@@ -15,7 +15,7 @@ export type FAQType = {
 export type TokenMetaDataType = {
   name: string;
   symbol: string;
-  logo: File | string;
+  logo: File | undefined;
   decimals: number;
   supply: number;
   description?: string;

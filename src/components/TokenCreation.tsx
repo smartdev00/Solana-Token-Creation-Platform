@@ -12,23 +12,32 @@ import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 
 const TokenCreation = () => {
-  const [currentProgress, setCurrentProgress] = useState<number>(3);
+  const [currentProgress, setCurrentProgress] = useState<number>(1);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
     symbol: '',
     supply: 1000000000,
     decimals: 9,
-    logo: '',
+    logo: undefined,
     enableCreator: true,
     freezeable: true,
     mintable: true,
     updateable: true,
   });
+
+  function handleNextOrCreateClick() {
+    if (currentProgress < 3) {
+      setCurrentProgress(currentProgress + 1);
+    } else if (currentProgress === 3) {
+      console.log('tokenMetaData', tokenMetaData);
+    }
+  }
   return (
     <div>
       <Progress currentProgress={currentProgress} />
       <GradientBorderCard>
         <div className='space-y-6'>
+          {/* Step I */}
           {currentProgress === 1 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
@@ -47,9 +56,11 @@ const TokenCreation = () => {
                   setTokenMetaData={setTokenMetaData}
                 />
               </div>
-              <ImageUpload className='mt-6 md:mt-8' />
+              <ImageUpload className='mt-6 md:mt-8' tokenMetaData={tokenMetaData} setTokenMetaData={setTokenMetaData} />
             </div>
           )}
+
+          {/* Step II */}
           {currentProgress === 2 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
@@ -83,6 +94,8 @@ const TokenCreation = () => {
               />
             </div>
           )}
+
+          {/* Step III */}
           {currentProgress === 3 && (
             <div>
               <div className='space-y-4'>
@@ -136,7 +149,8 @@ const TokenCreation = () => {
             </div>
           )}
 
-          <div className='w-full flex flex-1 justify-between'>
+          {/* Back, Next and Create Token Buttons */}
+          <div className='w-full flex flex-1 justify-between pt-4'>
             {currentProgress > 1 ? (
               <GradientBorderButton onClick={() => setCurrentProgress(currentProgress - 1)}>Back</GradientBorderButton>
             ) : (
@@ -144,13 +158,16 @@ const TokenCreation = () => {
             )}
             <GradientButton
               className='justify-self-end'
-              onClick={() => setCurrentProgress(currentProgress + 1)}
+              onClick={handleNextOrCreateClick}
               disabled={
                 (currentProgress === 1 &&
                   (!!tokenMetaData.name === false ||
                     !!tokenMetaData.symbol === false ||
                     !!tokenMetaData.logo === false)) ||
-                (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false))
+                (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false)) ||
+                (currentProgress === 3 &&
+                  tokenMetaData.enableCreator === true &&
+                  (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false))
               }
             >
               {currentProgress === 3 ? 'Create Token' : 'Next'}

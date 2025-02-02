@@ -73,6 +73,22 @@ body {
   mask-composite: exclude !important;
 }
 
+.title-animate {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0; /* Fully transparent */
+    transform: translateY(20px); /* Start 20px down */
+  }
+  100% {
+    opacity: 1; /* Fully opaque */
+    transform: translateY(0); /* Move to original position */
+  }
+}
+
 /* .form-card:before {
   content: '';
   position: absolute;
