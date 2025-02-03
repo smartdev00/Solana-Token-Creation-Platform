@@ -34,14 +34,14 @@ const ModifyCreatorInformation = ({
           <TextField
             label='Creator Name'
             name='creatorName'
-            value={tokenMetaData.creatorName}
+            value={tokenMetaData.creatorName || ''}
             placeholder='Your name or organization'
             setTokenMetaData={setTokenMetaData}
           />
           <TextField
             label='Creator Website'
             name='creatorWebsite'
-            value={tokenMetaData.creatorWebsite}
+            value={tokenMetaData.creatorWebsite || ''}
             placeholder='https://yourmemecoinwebsite.fun'
             setTokenMetaData={setTokenMetaData}
           />

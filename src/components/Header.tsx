@@ -13,6 +13,8 @@ const Header = () => {
     if (publicKey) {
       const str = publicKey.toString().slice(0, 4) + '...' + publicKey.toString().slice(-4);
       setShortenedWallet(str);
+    } else {
+      setShortenedWallet(null);
     }
   }, [publicKey]);
   return (

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronRight, Globe, MessageCircle, Twitter } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ChevronRight, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
 import { GradientBorderButton, GradientButton } from './Button';
 import { GradientBorderCard } from './GradientBorderCard';
@@ -12,9 +12,11 @@ import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { createTransferSolTransaction } from '@/lib/web3';
 
 const TokenCreation = () => {
-  const [currentProgress, setCurrentProgress] = useState<number>(1);
+  const [currentProgress, setCurrentProgress] = useState<number>(3);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
     symbol: '',
@@ -26,13 +28,88 @@ const TokenCreation = () => {
     mintable: true,
     updateable: true,
   });
-  const { publicKey } = useWallet();
+  const [error, setError] = useState<string | null>(null);
+  const { publicKey, connected, sendTransaction } = useWallet();
 
-  function handleNextOrCreateClick() {
-    if (currentProgress < 3) {
-      setCurrentProgress(currentProgress + 1);
-    } else if (currentProgress === 3) {
-      console.log('tokenMetaData', tokenMetaData);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if ((event.target as HTMLElement).id === 'error-modal') {
+        setError('');
+      }
+    };
+
+    if (error) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [error]);
+
+  async function handleNextOrCreateClick() {
+    try {
+      if (currentProgress < 3) {
+        setCurrentProgress(currentProgress + 1);
+      } else if (currentProgress === 3) {
+        console.log('tokenMetaData', tokenMetaData);
+        if (!(publicKey && connected)) {
+          return;
+        }
+        // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+
+        let fee = 0.11;
+        if (tokenMetaData.enableCreator) fee += 0.1;
+        if (tokenMetaData.mintable) fee += 0.1;
+        if (tokenMetaData.freezeable) fee += 0.1;
+        if (tokenMetaData.updateable) fee += 0.1;
+
+        const balance = await connection.getBalance(publicKey);
+
+        if (balance < fee) {
+          setError(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
+          return;
+        }
+
+        if (!process.env.NEXT_PUBLIC_WALLET_ADDRESS) {
+          return;
+        }
+
+        const transaction = createTransferSolTransaction(
+          publicKey,
+          new PublicKey(process.env.NEXT_PUBLIC_WALLET_ADDRESS),
+          fee
+        );
+        console.log('transfer sol transactioin:', transaction);
+
+        if (!transaction) {
+          setError('Error while create transfer sol transaction.');
+          return;
+        }
+
+        const signature = await sendTransaction(transaction, connection);
+        console.log('Signature', signature);
+
+        if (signature) {
+          console.log('Before api request');
+          const response = await fetch('http://localhost:3000/api/create-token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: { tokenMetaData, publicKey } }),
+          });
+
+          if (response.ok) {
+            console.log('Response:', response);
+          } else {
+            console.error('Error response');
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
   return (
@@ -122,7 +199,7 @@ const TokenCreation = () => {
                 <TextField
                   placeholder='https://yourmemecoin.fun'
                   name='website'
-                  value={tokenMetaData?.website}
+                  value={tokenMetaData.website || ''}
                   setTokenMetaData={setTokenMetaData}
                 >
                   <div className='flex items-center gap-2 mb-2'>
@@ -133,7 +210,7 @@ const TokenCreation = () => {
                 <TextField
                   placeholder='https://twitter.com/yourmemecoin'
                   name='twitter'
-                  value={tokenMetaData?.twitter}
+                  value={tokenMetaData.twitter || ''}
                   setTokenMetaData={setTokenMetaData}
                 >
                   <div className='flex items-center gap-2 mb-2'>
@@ -144,7 +221,7 @@ const TokenCreation = () => {
                 <TextField
                   placeholder='https://t.me/yourchannel'
                   name='telegram'
-                  value={tokenMetaData?.telegram}
+                  value={tokenMetaData.telegram || ''}
                   setTokenMetaData={setTokenMetaData}
                 >
                   <div className='flex items-center gap-2 mb-2'>
@@ -155,7 +232,7 @@ const TokenCreation = () => {
                 <TextField
                   placeholder='https://discord.gg/your-server'
                   name='discord'
-                  value={tokenMetaData?.discord}
+                  value={tokenMetaData.discord || ''}
                   setTokenMetaData={setTokenMetaData}
                 >
                   <div className='flex items-center gap-2 mb-2'>
@@ -196,6 +273,38 @@ const TokenCreation = () => {
                 {currentProgress === 3 ? 'Create Token' : 'Next'}
                 <ChevronRight width={16} height={16} />
               </GradientButton>
+            </div>
+          )}
+
+          {error && (
+            <div
+              className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
+              id='error-modal'
+              // onClick={() => setError(null)}
+            >
+              <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
+                <div className='p-6'>
+                  <div className='flex items-center gap-2 mb-6'>
+                    <button
+                      className='h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center'
+                      onClick={() => setError(null)}
+                    >
+                      <X className='text-red-500' />
+                    </button>
+                    <h2 className='text-xl font-semibold text-white'>Error Creating Token</h2>
+                  </div>
+                  <div className='space-y-6'>
+                    <div className='p-4 rounded bg-red-500/10 border border-red-500/20'>
+                      <p className='text-sm text-red-400'>{error}</p>
+                    </div>
+                    <div className='border-t border-gray-800 pt-4'>
+                      <p className='text-sm text-gray-400'>
+                        Please try again or contact support if the issue persists.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
