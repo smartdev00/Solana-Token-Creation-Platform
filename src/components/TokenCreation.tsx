@@ -114,7 +114,7 @@ const TokenCreation = () => {
   }
   return (
     <div>
-      <Progress currentProgress={currentProgress} />
+      {!!publicKey && <Progress currentProgress={currentProgress} />}
       <GradientBorderCard>
         <div className='space-y-6'>
           {!!!publicKey && (
