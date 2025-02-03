@@ -16,7 +16,7 @@ import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { createTransferSolTransaction } from '@/lib/web3';
 
 const TokenCreation = () => {
-  const [currentProgress, setCurrentProgress] = useState<number>(3);
+  const [currentProgress, setCurrentProgress] = useState<number>(1);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
     symbol: '',
