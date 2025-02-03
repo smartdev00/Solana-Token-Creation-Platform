@@ -140,7 +140,6 @@ export async function POST(req: Request) {
       updateFieldInstruction
     );
     console.log('transaction.add:');
-
     // Send transaction
     transactionSignature = await sendAndConfirmTransaction(
       connection,
