@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 
 const PromoteItem = ({ promote }: { promote: PromoteItemType }) => {
   return (
-    <div className='relative'>
+    <div className='relative hover:scale-[1.02] transition-all'>
       <div className={`absolute left-1/2 transform -translate-x-1/2 z-20 -top-1 ${promote.id === 1 && 'sm:-top-5'}`}>
         <div className='px-5 py-1 rounded-full bg-gray-900 border border-gray-700 shadow-xl'>
           <span className={`text-base tracking-wide uppercase font-medium whitespace-nowrap ${promote.textColor}`}>

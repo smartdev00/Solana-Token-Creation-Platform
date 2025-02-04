@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-gray-900 via-[#0c1527] to-main min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full bg-gradient-to-br from-gray-900 via-[#0c1527] to-main min-h-screen flex flex-col`}
       >
         <AppWalletProvider>
           <Header />

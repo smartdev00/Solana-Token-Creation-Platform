@@ -170,7 +170,7 @@ const TokenCreation = () => {
   }
 
   return (
-    <div className='pt-8 max-w-4xl mx-auto !mb-6 px-2 md:px-4'>
+    <div className='pt-8 max-w-4xl mx-auto !mb-6 px-2 md:px-4 subtitle-animate'>
       {!!publicKey && <Progress currentProgress={currentProgress} />}
       <div className='bg-gradient-to-r from-cyan-400 p-0.5 to-purple-500 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.15)]'>
         <div className='space-y-6 bg-[#141F2E] rounded-xl p-8'>
