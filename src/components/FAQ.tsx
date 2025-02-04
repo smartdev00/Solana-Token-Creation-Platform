@@ -22,13 +22,15 @@ const FAQItem = ({
     <div className='border-b border-gray-700 last:border-0 pb-2 last:pb-0'>
       <button className='flex w-full justify-between items-center' onClick={handleClickFaq}>
         <span className='text-gray-200 font-medium'>{content.question}</span>
-        <Plus width={20} height={20} className='text-cyan-400' />
+        <Plus
+          width={20}
+          height={20}
+          className={`text-cyan-400 transform transition-transform ${open ? 'rotate-45' : 'rotate-0'}`}
+        />
       </button>
-      {open && (
-        <div>
-          <p className='text-gray-300 text-sm md:text-base'>{content.answer}</p>
-        </div>
-      )}
+      <div className={`transition-all transform ${open ? 'max-h-96 opacity-100 mt-0.5' : 'max-h-0 opacity-0 mt-0'}`}>
+        <p className='text-gray-300 text-sm md:text-base'>{content.answer}</p>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Coins, Lock, Pencil } from 'lucide-react';
-import { FAQType, HelpType, RevokeAuthorityType } from './types';
+import { FAQType, HelpType, PromoteItemType, RevokeAuthorityType } from './types';
 
 export const faqs: FAQType[] = [
   {
@@ -52,7 +52,7 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     content: 'Freeze Authority allows you to freeze token accounts of holders.',
     price: 0.1,
     logo: Lock,
-    type: 'freezeable'
+    type: 'freezeable',
   },
   {
     id: 1,
@@ -60,7 +60,7 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     content: 'Mint Authority allows you to mint more supply of your token.',
     price: 0.1,
     logo: Coins,
-    type: 'mintable'
+    type: 'mintable',
   },
   {
     id: 2,
@@ -68,6 +68,39 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     content: 'Update Authority allows you to update the token metadata about your token.',
     price: 0.1,
     logo: Pencil,
-    type: 'updateable'
+    type: 'updateable',
+  },
+];
+
+export const promoteItems: PromoteItemType[] = [
+  {
+    id: 2,
+    title: 'silver',
+    price: 0.5,
+    benefits: ['Second position on trending page', 'Promote for 30 minutes', 'Great visibility for your token'],
+    fromColor: 'from-blue-500',
+    viaColor: 'via-purple-500',
+    toColor: 'to-pink-500',
+    textColor: 'text-blue-400'
+  },
+  {
+    id: 1,
+    title: 'gold',
+    price: 1,
+    benefits: ['Top position on trending page', 'Promote for 60 minutes', 'Highest visibility duration'],
+    fromColor: 'from-yellow-500',
+    viaColor: 'via-purple-500',
+    toColor: 'to-pink-500',
+    textColor: 'text-yellow-400'
+  },
+  {
+    id: 3,
+    title: 'bronze',
+    price: 0.25,
+    benefits: ['Third position on trending page', 'Promote for 15 minutes', 'Good visibility for your token'],
+    fromColor: 'from-green-500',
+    viaColor: 'via-blue-500',
+    toColor: 'to-purple-500',
+    textColor: 'text-green-400'
   },
 ];
