@@ -78,6 +78,11 @@ body {
   animation: fadeInUp 0.8s ease-out forwards;
 }
 
+.subtitle-animate {
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0; /* Fully transparent */

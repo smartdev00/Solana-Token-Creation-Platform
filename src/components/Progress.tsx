@@ -24,7 +24,7 @@ const LineItem = ({ currentProgress, number }: { currentProgress: number; number
 
 const Progress = ({ currentProgress }: { currentProgress: number }) => {
   return (
-    <div className='flex justify-between mb-4 md:mb-6'>
+    <div className='subtitle-animate flex justify-between mb-4 md:mb-6'>
       <div className='flex items-center flex-1'>
         <CircleItem currentProgress={currentProgress} number={1} />
         <LineItem currentProgress={currentProgress} number={1} />

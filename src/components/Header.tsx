@@ -27,9 +27,10 @@ const Header = () => {
       <nav className='container flex fixed items-center justify-between top-7 left-0 right-0 z-50 backdrop-blur-sm border-b border-gray-700/50 h-16 box-content px-4'>
         <div>Logo</div>
         <div className='flex justify-center space-x-4'>
-          <LinkButton text='Create Token' />
-          <LinkButton text='Liquidity Pool' />
-          <LinkButton text='Manage Liquidity' />
+          <LinkButton href='https://coinfast.fun'>Create Token</LinkButton>
+          <LinkButton href='https://raydium.io/liquidity/create-pool/'>Liquidity Pool</LinkButton>
+          <LinkButton href='https://coinfast.fun/promote'>Promote Token</LinkButton>
+          <LinkButton href='https://coinfast.fun/trending'>Trending 🔥</LinkButton>
         </div>
         <WalletMultiButton
           style={{

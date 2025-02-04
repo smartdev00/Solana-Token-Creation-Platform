@@ -114,7 +114,7 @@ export const GradientBorderCard: React.FC<NeonGradientCardProps> = ({
           '--pseudo-element-height': `${dimensions.height + borderSize * 2}px`,
         } as CSSProperties
       }
-      className={cn('relative z-10 size-full rounded-[var(--border-radius)]', className)}
+      className={cn('subtitle-animate relative z-10 size-full rounded-[var(--border-radius)]', className)}
       {...props}
     >
       <div

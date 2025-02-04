@@ -36,8 +36,8 @@ const FAQItem = ({
 const FAQ = () => {
   const [id, setId] = useState<number | null>(null);
   return (
-    <div className='container bg-gray-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-xl border border-gray-700'>
-      <h2 className='bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent text-2xl md:text-3xl font-bold mb-4 md:mb-6'>
+    <div className='container subtitle-animate bg-gray-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-xl border border-gray-700'>
+      <h2 className='subtitle-animate bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent text-2xl md:text-3xl font-bold mb-4 md:mb-6'>
         Frequently Asked Questions
       </h2>
       <div className='space-y-2'>
