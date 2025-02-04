@@ -167,7 +167,7 @@ const TokenCreation = () => {
     }
   }
   return (
-    <div className='pt-8'>
+    <div className='pt-8 max-w-4xl mx-auto mb-6'>
       {!!publicKey && <Progress currentProgress={currentProgress} />}
       <GradientBorderCard>
         <div className='space-y-6'>
@@ -331,102 +331,98 @@ const TokenCreation = () => {
               </GradientButton>
             </div>
           )}
-
-          {error && (
-            <div
-              className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
-              id='error-modal'
-              // onClick={() => setError(null)}
-            >
-              <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
-                <div className='p-6'>
-                  <div className='flex items-center gap-2 mb-6'>
-                    <button
-                      className='h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center'
-                      onClick={() => setError(null)}
-                    >
-                      <X className='text-red-500' />
-                    </button>
-                    <h2 className='text-xl font-semibold text-white'>Error Creating Token</h2>
-                  </div>
-                  <div className='space-y-6'>
-                    <div className='p-4 rounded bg-red-500/10 border border-red-500/20'>
-                      <p className='text-sm text-red-400'>{error}</p>
-                    </div>
-                    <div className='border-t border-gray-800 pt-4'>
-                      <p className='text-sm text-gray-400'>
-                        Please try again or contact support if the issue persists.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {mintAddress && (
-            <div
-              className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
-              id='success-modal'
-            >
-              <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
-                <div className='p-6'>
-                  <div className='flex items-center gap-2 mb-6'>
-                    <button
-                      className='h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center'
-                      onClick={() => setMintAddress(null)}
-                    >
-                      <X className='text-green-500' />
-                    </button>
-                    <h2 className='text-xl font-semibold text-white'>Token Created Successfully!</h2>
-                  </div>
-                  <div className='space-y-6'>
-                    <div className='space-y-2'>
-                      <label className='text-sm font-medium text-gray-400'>Token Address</label>
-                      <div className='flex items-center gap-2'>
-                        <code className='flex-1 p-2 rounded bg-gray-800 text-sm text-gray-300 overflow-x-auto'>
-                          {mintAddress}
-                        </code>
-                        <button className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'>
-                          <Copy className='h-4 w-4 text-gray-400' />
-                        </button>
-                      </div>
-                    </div>
-                    <div className='space-y-4'>
-                      <Link
-                        href={`https://explorer.solana.com/address/${mintAddress}`}
-                        target='_blank'
-                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                      >
-                        <ExternalLink className='h-4 w-4 text-gray-400' /> View on Explorer
-                      </Link>
-                      <Link
-                        href={`https://solscan.io/token/${mintAddress}`}
-                        target='_blank'
-                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                      >
-                        <ExternalLink className='h-4 w-4 text-gray-400' /> View on Solscan
-                      </Link>
-                      <Link
-                        href='https://raydium.io/liquidity/create-pool/'
-                        target='_blank'
-                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                      >
-                        <ExternalLink className='h-4 w-4 text-gray-400' /> Create Liquidity Pool
-                      </Link>
-                    </div>
-                    <div className='border-t border-gray-800 pt-4'>
-                      <p className='text-sm text-gray-400'>
-                        Add this token to your wallet using the token address above.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </GradientBorderCard>
+
+      {error && (
+        <div
+          className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
+          id='error-modal'
+          // onClick={() => setError(null)}
+        >
+          <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
+            <div className='p-6'>
+              <div className='flex items-center gap-2 mb-6'>
+                <button
+                  className='h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center'
+                  onClick={() => setError(null)}
+                >
+                  <X className='text-red-500' />
+                </button>
+                <h2 className='text-xl font-semibold text-white'>Error Creating Token</h2>
+              </div>
+              <div className='space-y-6'>
+                <div className='p-4 rounded bg-red-500/10 border border-red-500/20'>
+                  <p className='text-sm text-red-400'>{error}</p>
+                </div>
+                <div className='border-t border-gray-800 pt-4'>
+                  <p className='text-sm text-gray-400'>Please try again or contact support if the issue persists.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mintAddress && (
+        <div
+          className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
+          id='success-modal'
+        >
+          <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
+            <div className='p-6'>
+              <div className='flex items-center gap-2 mb-6'>
+                <button
+                  className='h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center'
+                  onClick={() => setMintAddress(null)}
+                >
+                  <X className='text-green-500' />
+                </button>
+                <h2 className='text-xl font-semibold text-white'>Token Created Successfully!</h2>
+              </div>
+              <div className='space-y-6'>
+                <div className='space-y-2'>
+                  <label className='text-sm font-medium text-gray-400'>Token Address</label>
+                  <div className='flex items-center gap-2'>
+                    <code className='flex-1 p-2 rounded bg-gray-800 text-sm text-gray-300 overflow-x-auto'>
+                      {mintAddress}
+                    </code>
+                    <button className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'>
+                      <Copy className='h-4 w-4 text-gray-400' />
+                    </button>
+                  </div>
+                </div>
+                <div className='space-y-4'>
+                  <Link
+                    href={`https://explorer.solana.com/address/${mintAddress}`}
+                    target='_blank'
+                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                  >
+                    <ExternalLink className='h-4 w-4 text-gray-400' /> View on Explorer
+                  </Link>
+                  <Link
+                    href={`https://solscan.io/token/${mintAddress}`}
+                    target='_blank'
+                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                  >
+                    <ExternalLink className='h-4 w-4 text-gray-400' /> View on Solscan
+                  </Link>
+                  <Link
+                    href='https://raydium.io/liquidity/create-pool/'
+                    target='_blank'
+                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                  >
+                    <ExternalLink className='h-4 w-4 text-gray-400' /> Create Liquidity Pool
+                  </Link>
+                </div>
+                <div className='border-t border-gray-800 pt-4'>
+                  <p className='text-sm text-gray-400'>Add this token to your wallet using the token address above.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
