@@ -31,7 +31,6 @@ const TextField = ({
     if (min && Number(e.target.value) < min) {
       return;
     }
-
     if (max && Number(e.target.value) > max) {
       return;
     }
