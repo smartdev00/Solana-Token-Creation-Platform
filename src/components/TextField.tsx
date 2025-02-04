@@ -25,7 +25,7 @@ const TextField = ({
   setTokenMetaData: Dispatch<SetStateAction<TokenMetaDataType>>;
 }) => {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    if (isNaN(Number(e.target.value))) {
+    if ((min || max) && isNaN(Number(e.target.value))) {
       return;
     }
     if (min && Number(e.target.value) < min) {
