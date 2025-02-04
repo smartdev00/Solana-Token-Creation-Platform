@@ -32,7 +32,7 @@ const TokenCreation = () => {
     updateable: true,
   });
   const [error, setError] = useState<string | null>(null);
-  const [mintAddress, setMintAddress] = useState<string | null>('sdf');
+  const [mintAddress, setMintAddress] = useState<string | null>('');
   const { publicKey, connected, sendTransaction } = useWallet();
 
   useEffect(() => {
