@@ -1,7 +1,7 @@
 'use client';
 
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { LinkButton } from './Button';
+import { LinkButton } from '../component/Button';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react';

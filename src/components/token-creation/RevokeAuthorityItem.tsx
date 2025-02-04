@@ -1,6 +1,6 @@
 import { RevokeAuthorityType, TokenMetaDataType } from '@/lib/types';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
-import { SelectButton } from './Button';
+import { SelectButton } from '../component/Button';
 import { cn } from '@/lib/utils';
 
 const RevokeAuthorityItem = ({

@@ -1,7 +1,7 @@
 import { TokenMetaDataType } from '@/lib/types';
-import TextField from './TextField';
+import TextField from '../component/TextField';
 import { Dispatch, SetStateAction } from 'react';
-import { ToggleButton } from './Button';
+import { ToggleButton } from '../component/Button';
 
 const ModifyCreatorInformation = ({
   tokenMetaData,

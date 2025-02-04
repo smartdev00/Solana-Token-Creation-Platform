@@ -1,6 +1,6 @@
 import FAQ from '@/components/FAQ';
 import Help from '@/components/Help';
-import TokenCreation from '@/components/TokenCreation';
+import TokenCreation from '@/components/token-creation/TokenCreation';
 import TokenLaunchBanner from '@/components/TokenLaunchBanner';
 
 export default function Home() {

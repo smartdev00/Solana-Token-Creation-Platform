@@ -1,5 +1,5 @@
 import Promote from '@/components/Promote';
-import { GradientTypography } from '@/components/Typography';
+import { GradientTypography } from '@/components/component/Typography';
 
 const Page = () => {
   return (

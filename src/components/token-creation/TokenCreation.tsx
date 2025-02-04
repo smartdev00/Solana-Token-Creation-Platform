@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { ChevronRight, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
-import { GradientBorderButton, GradientButton } from './Button';
-import TextField from './TextField';
-import ImageUpload from './ImageUpload';
+import { GradientBorderButton, GradientButton } from '../component/Button';
+import TextField from '../component/TextField';
+import ImageUpload from '../component/ImageUpload';
 import { TokenMetaDataType } from '@/lib/types';
 import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
