@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { ChevronRight, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
 import { GradientBorderButton, GradientButton } from './Button';
-import { GradientBorderCard } from './GradientBorderCard';
 import TextField from './TextField';
 import ImageUpload from './ImageUpload';
 import { TokenMetaDataType } from '@/lib/types';
@@ -167,10 +166,10 @@ const TokenCreation = () => {
     }
   }
   return (
-    <div className='pt-8 max-w-4xl mx-auto mb-6'>
+    <div className='pt-8 max-w-4xl mx-auto !mb-6 px-2 md:px-4'>
       {!!publicKey && <Progress currentProgress={currentProgress} />}
-      <GradientBorderCard>
-        <div className='space-y-6'>
+      <div className='bg-gradient-to-r from-cyan-400 p-0.5 to-purple-500 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.15)]'>
+        <div className='space-y-6 bg-[#141F2E] rounded-xl p-8'>
           {!!!publicKey && (
             <div className='text-center py-2'>
               <p className='text-gray-300 mb-3'>Please connect your wallet to continue</p>
@@ -332,7 +331,7 @@ const TokenCreation = () => {
             </div>
           )}
         </div>
-      </GradientBorderCard>
+      </div>
 
       {error && (
         <div

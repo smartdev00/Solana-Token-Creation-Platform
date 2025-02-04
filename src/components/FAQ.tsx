@@ -21,7 +21,7 @@ const FAQItem = ({
   return (
     <div className='border-b border-gray-700 last:border-0 pb-2 last:pb-0'>
       <button className='flex w-full justify-between items-center' onClick={handleClickFaq}>
-        <span className='text-gray-200 font-medium'>{content.question}</span>
+        <span className='text-gray-200 font-medium text-left'>{content.question}</span>
         <Plus
           width={20}
           height={20}

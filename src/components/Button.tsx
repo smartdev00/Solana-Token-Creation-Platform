@@ -7,9 +7,13 @@ export const LinkButton = ({ children, href }: { children: ReactNode; href?: str
   return (
     <Link
       href={href || ''}
-      className='px-4 py-2 text-transparent bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-sm md:text-base font-medium tracking-wide'
+      className={cn(
+        'px-4 py-2 group relative text-transparent transition-all text-sm md:text-base font-medium tracking-wide',
+        'bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text hover:from-cyan-300 hover:to-purple-400'
+      )}
     >
       {children}
+      <div className='absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
     </Link>
   );
 };
@@ -24,7 +28,10 @@ export const GradientBorderButton = ({
 }) => {
   return (
     <button
-      className='relative rounded-2xl flex items-center justify-center px-8 py-3 h-[52px] bg-gradient-to-tr from-cyan-400 to-purple-500 overflow-hidden font-medium text-white transition duration-300 ease-out group'
+      className={cn(
+        'relative rounded-2xl flex items-center justify-center px-8 py-3 h-[52px] overflow-hidden font-medium text-white transition duration-300 ease-out group',
+        'bg-gradient-to-tr from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400'
+      )}
       onClick={onClick}
     >
       <span className='absolute rounded-2xl m-0.5 inset-0 border-4 border-transparent bg-main box-border'></span>
