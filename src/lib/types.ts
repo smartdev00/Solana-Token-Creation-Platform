@@ -39,3 +39,14 @@ export type RevokeAuthorityType = {
   logo: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
   type: keyof TokenMetaDataType;
 };
+
+export type PromoteItemType = {
+  id: number;
+  title: string;
+  price: number;
+  benefits: string[];
+  fromColor: string;
+  viaColor: string;
+  toColor: string;
+  textColor: string;
+};

@@ -28,11 +28,11 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-gray-900 via-[#0c1527] to-main`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-gray-900 via-[#0c1527] to-main min-h-screen flex flex-col`}
       >
         <AppWalletProvider>
           <Header />
-          <main className='min-h-screen mt-[93px]'>{children}</main>
+          <main className='mt-[93px] flex-1'>{children}</main>
           <Footer />
         </AppWalletProvider>
       </body>
