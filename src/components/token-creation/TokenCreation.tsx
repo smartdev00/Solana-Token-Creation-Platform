@@ -11,7 +11,7 @@ import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, clusterApiUrl } from '@solana/web3.js';
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from '@solana/web3.js';
 import { createTokenCreationTransaction } from '@/lib/web3';
 import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
@@ -67,11 +67,11 @@ const TokenCreation = () => {
         setCurrentProgress(currentProgress + 1);
       } else if (currentProgress === 3) {
         console.log('tokenMetaData', tokenMetaData);
-        if (!(publicKey && connected && sendTransaction)) {
+        if (!(publicKey && connected && process.env.NEXT_PUBLIC_WALLET_ADDRESS && sendTransaction)) {
           return;
         }
-        // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
-        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+        const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
+        // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
         let fee = 0.11;
         if (tokenMetaData.enableCreator) fee += 0.1;
@@ -86,10 +86,6 @@ const TokenCreation = () => {
           return;
         }
 
-        if (!process.env.NEXT_PUBLIC_WALLET_ADDRESS) {
-          return;
-        }
-
         if (!tokenMetaData.logo) {
           setError('Please upload token log at first.');
           return;
@@ -101,9 +97,9 @@ const TokenCreation = () => {
           console.log('loaded: ', loaded, 'total: ', total, 'value: ', value);
         }).catch((err) => {
           console.log(err);
-          throw 'Project Data upload failed to IPFS. Please retry.';
+          setError('Token logo upload failed to IPFS. Please retry.');
+          throw 'Token logo upload failed to IPFS. Please retry.';
         });
-        console.log('logo:', logo);
 
         // Upload metadata.json to IPFS
         const metadataUri = await uploadToIPFS(
@@ -128,9 +124,9 @@ const TokenCreation = () => {
           ({}: AxiosProgressEvent) => {}
         ).catch((err) => {
           console.log(err);
-          throw 'Project Data upload failed to IPFS. Please retry.';
+          setError('Token metadata upload failed to IPFS. Please retry.');
+          throw 'Token metadata upload failed to IPFS. Please retry.';
         });
-        console.log('metadataUri:', metadataUri);
 
         // Create token creation transaction
         const { transaction, signers, mint } = await createTokenCreationTransaction(
@@ -139,10 +135,9 @@ const TokenCreation = () => {
           publicKey,
           metadataUri
         );
-        console.log('Token creation transaction:', transaction);
 
         if (!transaction) {
-          setError('Error while create transfer sol transaction.');
+          setError('Error while building the token creation transaction.');
           return;
         }
 
@@ -156,15 +151,16 @@ const TokenCreation = () => {
         );
 
         const signature = await sendTransaction(transaction, connection, { signers: signers });
+        console.log('Signature', signature);
         if (signature) {
           setMintAddress(mint.toString());
         }
-        console.log('Signature', signature);
       }
     } catch (error) {
       console.error(error);
     }
   }
+
   return (
     <div className='pt-8 max-w-4xl mx-auto !mb-6 px-2 md:px-4'>
       {!!publicKey && <Progress currentProgress={currentProgress} />}

@@ -1,22 +1,10 @@
-import {
-  Connection,
-  Keypair,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  clusterApiUrl,
-  sendAndConfirmTransaction,
-} from '@solana/web3.js';
+import { Connection, Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import {
   ExtensionType,
   TOKEN_2022_PROGRAM_ID,
   createInitializeMintInstruction,
   getMintLen,
   createInitializeMetadataPointerInstruction,
-  getMint,
-  getMetadataPointerState,
-  getTokenMetadata,
   TYPE_SIZE,
   LENGTH_SIZE,
   createMintToInstruction,
@@ -29,7 +17,6 @@ import {
 import {
   createInitializeInstruction,
   createUpdateFieldInstruction,
-  createRemoveKeyInstruction,
   pack,
   TokenMetadata,
 } from '@solana/spl-token-metadata';
@@ -174,141 +161,3 @@ export async function createTokenCreationTransaction(
     return { transaction: null, signers: [], mint: null };
   }
 }
-
-export async function getTokenInfo(mint: PublicKey) {
-  try {
-    const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
-    const info = await getMint(connection, mint);
-    console.log(info);
-  } catch (error) {
-    console.error(error);
-  }
-}
-// getTokenInfo(new PublicKey('62Xt9ETKxYFxU8ifdvkZSZLqwULi7DXHv2DZhPzRwD1z'));
-
-export async function updateMetadata(
-  connection: Connection,
-  mintKeypair: Keypair,
-  publicKey: PublicKey,
-  metaData: TokenMetadata
-) {
-  try {
-    const transaction = new Transaction();
-    // Retrieve mint information
-    const mintInfo = await getMint(connection, mintKeypair.publicKey, 'confirmed', TOKEN_2022_PROGRAM_ID);
-    console.log('mintInfo:', mintInfo);
-
-    // Retrieve and log the metadata pointer state
-    const metadataPointer = getMetadataPointerState(mintInfo);
-    console.log('\nMetadata Pointer:', JSON.stringify(metadataPointer, null, 2));
-
-    // Retrieve and log the metadata state
-    const metadata = await getTokenMetadata(
-      connection,
-      mintKeypair.publicKey // Mint Account address
-    );
-    console.log('\nMetadata:', JSON.stringify(metadata, null, 2));
-
-    // Instruction to remove a key from the metadata
-    const removeKeyInstruction = createRemoveKeyInstruction({
-      programId: TOKEN_2022_PROGRAM_ID, // Token Extension Program as Metadata Program
-      metadata: mintKeypair.publicKey, // Address of the metadata
-      updateAuthority: publicKey, // Authority that can update the metadata
-      key: metaData.additionalMetadata[0][0], // Key to remove from the metadata
-      idempotent: true, // If the idempotent flag is set to true, then the instruction will not error if the key does not exist
-    });
-    console.log('removeKeyInstruction:');
-
-    // Add instruction to new transaction
-    transaction.add(removeKeyInstruction);
-    console.log('transaction add 2:');
-
-    // Send transaction
-    const signature = await sendAndConfirmTransaction(connection, transaction, [mintKeypair]);
-
-    console.log('\nRemove Additional Metadata Field:', `https://solana.fm/tx/${signature}?cluster=devnet-solana`);
-
-    // Retrieve and log the metadata state
-    const updatedMetadata = await getTokenMetadata(
-      connection,
-      mintKeypair.publicKey // Mint Account address
-    );
-    console.log('\nUpdated Metadata:', JSON.stringify(updatedMetadata, null, 2));
-
-    console.log('\nMint Account:', `https://solana.fm/address/${mintKeypair.publicKey}?cluster=devnet-solana`);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function getNativeBalance(connection: Connection, publicKey: PublicKey) {
-  try {
-    const balance = await connection.getBalance(publicKey);
-    return balance;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export function createTransferSolTransaction(source: PublicKey, destination: PublicKey, amount: number) {
-  try {
-    const transaction = new Transaction();
-
-    const transferSolInstruction = SystemProgram.transfer({
-      toPubkey: destination,
-      fromPubkey: source,
-      lamports: amount * LAMPORTS_PER_SOL,
-    });
-
-    transaction.add(transferSolInstruction);
-    return transaction;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-// const connection = new Connection(clusterApiUrl('devnet'), 'confirmed'); // Test
-//       if (!(publicKey && connected && signTransaction)) {
-//         console.log('Connect your wallet at first.');
-//         return;
-//       }
-
-//       // Generate wallet to mint token
-//       const mintingFromWallet = await Keypair.generate();
-//       console.log('mintingFromWallet', mintingFromWallet.secretKey.toString(), mintingFromWallet.publicKey.toString());
-
-//       // Airdrop 1 SOL to minting wallet on devnet
-//       const fromAirdropSignature = await connection.requestAirdrop(mintingFromWallet.publicKey, 1000000000);
-//       await connection.confirmTransaction(fromAirdropSignature, 'confirmed');
-//       console.log('airdroped');
-
-//       const tokenMint = await createMint(
-//         connection,
-//         mintingFromWallet,
-//         mintingFromWallet.publicKey,
-//         tokenMetaData.freezeable ? mintingFromWallet.publicKey : null,
-//         tokenMetaData.decimals
-//       );
-//       const mint = await getMint(connection, tokenMint);
-//       console.log('tokenMint', tokenMint.toString(), 'mint', mint.address.toString());
-
-//       const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-//         connection,
-//         mintingFromWallet,
-//         mint.address,
-//         mintingFromWallet.publicKey
-//       );
-
-//       const fromTokenAccountInfo = await getAccount(connection, fromTokenAccount.address);
-//       console.log('fromTokenAccountInfo', fromTokenAccountInfo);
-
-// const transactionSignature = await mintTo(
-//   connection,
-//   mintingFromWallet,
-//   mint.address,
-//   fromTokenAccount.address,
-//   mintingFromWallet,
-//   BigInt(tokenMetaData.supply * 10 ** tokenMetaData.decimals)
-// );
-//       console.log('transactionSignature', transactionSignature);
