@@ -32,6 +32,7 @@ const TokenCreation = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [mintAddress, setMintAddress] = useState<string | null>('');
+  const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
 
   useEffect(() => {
@@ -66,9 +67,10 @@ const TokenCreation = () => {
       if (currentProgress < 3) {
         setCurrentProgress(currentProgress + 1);
       } else if (currentProgress === 3) {
+        setIsCreating(true);
         console.log('tokenMetaData', tokenMetaData);
         if (!(publicKey && connected && process.env.NEXT_PUBLIC_WALLET_ADDRESS && sendTransaction)) {
-          return;
+          throw new Error(`Please connect wallet!`);
         }
         const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
         // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
@@ -82,23 +84,17 @@ const TokenCreation = () => {
         const balance = await connection.getBalance(publicKey);
 
         if (balance < fee) {
-          setError(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
-          return;
+          throw new Error(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
         }
 
         if (!tokenMetaData.logo) {
-          setError('Please upload token log at first.');
-          return;
+          throw new Error('Please upload token log at first.');
         }
 
         // Upload token logo to IPFS
-        const logo = await uploadToIPFS(tokenMetaData.logo, ({ loaded, total }: AxiosProgressEvent) => {
-          const value = Math.floor((Number(loaded) * 100) / Number(total));
-          console.log('loaded: ', loaded, 'total: ', total, 'value: ', value);
-        }).catch((err) => {
+        const logo = await uploadToIPFS(tokenMetaData.logo, ({}: AxiosProgressEvent) => {}).catch((err) => {
           console.log(err);
-          setError('Token logo upload failed to IPFS. Please retry.');
-          throw 'Token logo upload failed to IPFS. Please retry.';
+          throw new Error('Token logo upload failed to IPFS. Please retry.');
         });
 
         // Upload metadata.json to IPFS
@@ -124,8 +120,7 @@ const TokenCreation = () => {
           ({}: AxiosProgressEvent) => {}
         ).catch((err) => {
           console.log(err);
-          setError('Token metadata upload failed to IPFS. Please retry.');
-          throw 'Token metadata upload failed to IPFS. Please retry.';
+          throw new Error('Token metadata upload failed to IPFS. Please retry.');
         });
 
         // Create token creation transaction
@@ -137,8 +132,7 @@ const TokenCreation = () => {
         );
 
         if (!transaction) {
-          setError('Error while building the token creation transaction.');
-          return;
+          throw new Error('Error while building the token creation transaction.');
         }
 
         // Create SOL transfer instruction and add
@@ -150,14 +144,28 @@ const TokenCreation = () => {
           })
         );
 
-        const signature = await sendTransaction(transaction, connection, { signers: signers });
-        console.log('Signature', signature);
-        if (signature) {
+        try {
+          const signature = await sendTransaction(transaction, connection, { signers: signers });
+          console.log('Signature', signature);
           setMintAddress(mint.toString());
+          setIsCreating(false);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (sendError: any) {
+          // Check if the error is due to user cancellation
+          if (sendError.message.includes('User rejected the request.')) {
+            setError('Transaction was canceled by the user.');
+            setIsCreating(false);
+            return;
+          } else {
+            throw new Error('Transaction failed');
+          }
         }
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error(error);
+      setIsCreating(false);
+      setError(error.message || 'An unexpected error occurred.');
     }
   }
 
@@ -318,11 +326,16 @@ const TokenCreation = () => {
                   (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false)) ||
                   (currentProgress === 3 &&
                     tokenMetaData.enableCreator === true &&
-                    (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false))
+                    (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false)) ||
+                  isCreating
                 }
               >
                 {currentProgress === 3 ? 'Create Token' : 'Next'}
-                <ChevronRight width={16} height={16} />
+                {!isCreating ? (
+                  <ChevronRight width={16} height={16} />
+                ) : (
+                  <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />
+                )}
               </GradientButton>
             </div>
           )}
