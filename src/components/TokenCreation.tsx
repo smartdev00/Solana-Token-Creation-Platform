@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronRight, Globe, MessageCircle, Twitter, X } from 'lucide-react';
+import { ChevronRight, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
 import { GradientBorderButton, GradientButton } from './Button';
 import { GradientBorderCard } from './GradientBorderCard';
@@ -12,8 +12,11 @@ import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
-import { createTransferSolTransaction } from '@/lib/web3';
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, clusterApiUrl } from '@solana/web3.js';
+import { createTokenCreationTransaction } from '@/lib/web3';
+import { uploadToIPFS } from '@/lib/ipfsUpload';
+import { AxiosProgressEvent } from 'axios';
+import Link from 'next/link';
 
 const TokenCreation = () => {
   const [currentProgress, setCurrentProgress] = useState<number>(1);
@@ -29,23 +32,35 @@ const TokenCreation = () => {
     updateable: true,
   });
   const [error, setError] = useState<string | null>(null);
+  const [mintAddress, setMintAddress] = useState<string | null>('sdf');
   const { publicKey, connected, sendTransaction } = useWallet();
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickErrorOutside = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'error-modal') {
-        setError('');
+        setError(null);
       }
     };
 
     if (error) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mousedown', handleClickErrorOutside);
+    }
+
+    const handleClickSuccessOutside = (event: MouseEvent) => {
+      if ((event.target as HTMLElement).id === 'success-modal') {
+        setMintAddress(null);
+      }
+    };
+
+    if (mintAddress) {
+      document.addEventListener('mousedown', handleClickSuccessOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickErrorOutside);
+      document.removeEventListener('mousedown', handleClickSuccessOutside);
     };
-  }, [error]);
+  }, [error, mintAddress]);
 
   async function handleNextOrCreateClick() {
     try {
@@ -53,7 +68,7 @@ const TokenCreation = () => {
         setCurrentProgress(currentProgress + 1);
       } else if (currentProgress === 3) {
         console.log('tokenMetaData', tokenMetaData);
-        if (!(publicKey && connected)) {
+        if (!(publicKey && connected && sendTransaction)) {
           return;
         }
         // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
@@ -76,37 +91,76 @@ const TokenCreation = () => {
           return;
         }
 
-        const transaction = createTransferSolTransaction(
+        if (!tokenMetaData.logo) {
+          setError('Please upload token log at first.');
+          return;
+        }
+
+        // Upload token logo to IPFS
+        const logo = await uploadToIPFS(tokenMetaData.logo, ({ loaded, total }: AxiosProgressEvent) => {
+          const value = Math.floor((Number(loaded) * 100) / Number(total));
+          console.log('loaded: ', loaded, 'total: ', total, 'value: ', value);
+        }).catch((err) => {
+          console.log(err);
+          throw 'Project Data upload failed to IPFS. Please retry.';
+        });
+        console.log('logo:', logo);
+
+        // Upload metadata.json to IPFS
+        const metadataUri = await uploadToIPFS(
+          new File(
+            [
+              JSON.stringify({
+                name: tokenMetaData.name,
+                symbol: tokenMetaData.symbol,
+                description: tokenMetaData.description,
+                image: logo,
+                website: tokenMetaData.website || '',
+                extensions: {
+                  website: tokenMetaData.website || '',
+                  twitter: tokenMetaData.twitter || '',
+                  telegram: tokenMetaData.telegram || '',
+                  discord: tokenMetaData.discord || '',
+                },
+              }),
+            ],
+            'metadata.json'
+          ),
+          ({}: AxiosProgressEvent) => {}
+        ).catch((err) => {
+          console.log(err);
+          throw 'Project Data upload failed to IPFS. Please retry.';
+        });
+        console.log('metadataUri:', metadataUri);
+
+        // Create token creation transaction
+        const { transaction, signers, mint } = await createTokenCreationTransaction(
+          connection,
+          tokenMetaData,
           publicKey,
-          new PublicKey(process.env.NEXT_PUBLIC_WALLET_ADDRESS),
-          fee
+          metadataUri
         );
-        console.log('transfer sol transactioin:', transaction);
+        console.log('Token creation transaction:', transaction);
 
         if (!transaction) {
           setError('Error while create transfer sol transaction.');
           return;
         }
 
-        const signature = await sendTransaction(transaction, connection);
-        console.log('Signature', signature);
+        // Create SOL transfer instruction and add
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey(process.env.NEXT_PUBLIC_WALLET_ADDRESS),
+            lamports: Math.floor(fee * LAMPORTS_PER_SOL),
+          })
+        );
 
+        const signature = await sendTransaction(transaction, connection, { signers: signers });
         if (signature) {
-          console.log('Before api request');
-          const response = await fetch('http://localhost:3000/api/create-token', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: { tokenMetaData, publicKey } }),
-          });
-
-          if (response.ok) {
-            console.log('Response:', response);
-          } else {
-            console.error('Error response');
-          }
+          setMintAddress(mint.toString());
         }
+        console.log('Signature', signature);
       }
     } catch (error) {
       console.error(error);
@@ -165,6 +219,8 @@ const TokenCreation = () => {
                   label='Decimals'
                   placeholder='9'
                   name='decimals'
+                  min={0}
+                  max={18}
                   helperText='Enter a value between 0 and 18 decimals'
                   value={tokenMetaData?.decimals}
                   setTokenMetaData={setTokenMetaData}
@@ -300,6 +356,68 @@ const TokenCreation = () => {
                     <div className='border-t border-gray-800 pt-4'>
                       <p className='text-sm text-gray-400'>
                         Please try again or contact support if the issue persists.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mintAddress && (
+            <div
+              className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
+              id='success-modal'
+            >
+              <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
+                <div className='p-6'>
+                  <div className='flex items-center gap-2 mb-6'>
+                    <button
+                      className='h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center'
+                      onClick={() => setMintAddress(null)}
+                    >
+                      <X className='text-green-500' />
+                    </button>
+                    <h2 className='text-xl font-semibold text-white'>Token Created Successfully!</h2>
+                  </div>
+                  <div className='space-y-6'>
+                    <div className='space-y-2'>
+                      <label className='text-sm font-medium text-gray-400'>Token Address</label>
+                      <div className='flex items-center gap-2'>
+                        <code className='flex-1 p-2 rounded bg-gray-800 text-sm text-gray-300 overflow-x-auto'>
+                          {mintAddress}
+                        </code>
+                        <button className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'>
+                          <Copy className='h-4 w-4 text-gray-400' />
+                        </button>
+                      </div>
+                    </div>
+                    <div className='space-y-4'>
+                      <Link
+                        href={`https://explorer.solana.com/address/${mintAddress}`}
+                        target='_blank'
+                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                      >
+                        <ExternalLink className='h-4 w-4 text-gray-400' /> View on Explorer
+                      </Link>
+                      <Link
+                        href={`https://solscan.io/token/${mintAddress}`}
+                        target='_blank'
+                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                      >
+                        <ExternalLink className='h-4 w-4 text-gray-400' /> View on Solscan
+                      </Link>
+                      <Link
+                        href='https://raydium.io/liquidity/create-pool/'
+                        target='_blank'
+                        className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
+                      >
+                        <ExternalLink className='h-4 w-4 text-gray-400' /> Create Liquidity Pool
+                      </Link>
+                    </div>
+                    <div className='border-t border-gray-800 pt-4'>
+                      <p className='text-sm text-gray-400'>
+                        Add this token to your wallet using the token address above.
                       </p>
                     </div>
                   </div>

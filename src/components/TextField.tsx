@@ -10,6 +10,8 @@ const TextField = ({
   helperText,
   type = 'text',
   children,
+  min,
+  max,
 }: {
   label?: string;
   type?: string;
@@ -18,9 +20,22 @@ const TextField = ({
   value: string | number | undefined;
   helperText?: string;
   children?: ReactNode;
+  min?: number;
+  max?: number;
   setTokenMetaData: Dispatch<SetStateAction<TokenMetaDataType>>;
 }) => {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    if (isNaN(Number(e.target.value))) {
+      return;
+    }
+    if (min && Number(e.target.value) < min) {
+      return;
+    }
+
+    if (max && Number(e.target.value) > max) {
+      return;
+    }
+
     setTokenMetaData((prev) => {
       return { ...prev, [e.target.name]: e.target.value } as TokenMetaDataType;
     });
