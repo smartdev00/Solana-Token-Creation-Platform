@@ -31,6 +31,7 @@ const TokenCreation = () => {
     updateable: true,
   });
   const [error, setError] = useState<string | null>(null);
+  const [pubKey, setPubKey] = useState<string | null>(null);
   const [mintAddress, setMintAddress] = useState<string | null>('');
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
@@ -62,6 +63,21 @@ const TokenCreation = () => {
     };
   }, [error, mintAddress]);
 
+  useEffect(() => {
+    const fetchPublicKey = async () => {
+      const response = await fetch('/api/admin', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log(data.pubKey);
+      setPubKey(data.pubKey);
+    };
+    fetchPublicKey();
+  }, []);
+
   async function handleNextOrCreateClick() {
     try {
       if (currentProgress < 3) {
@@ -69,7 +85,7 @@ const TokenCreation = () => {
       } else if (currentProgress === 3) {
         setIsCreating(true);
         console.log('tokenMetaData', tokenMetaData);
-        if (!(publicKey && connected && process.env.NEXT_PUBLIC_WALLET_ADDRESS && sendTransaction)) {
+        if (!(publicKey && connected && pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
         const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
@@ -139,7 +155,7 @@ const TokenCreation = () => {
         transaction.add(
           SystemProgram.transfer({
             fromPubkey: publicKey,
-            toPubkey: new PublicKey(process.env.NEXT_PUBLIC_WALLET_ADDRESS),
+            toPubkey: new PublicKey(pubKey),
             lamports: Math.floor(fee * LAMPORTS_PER_SOL),
           })
         );
