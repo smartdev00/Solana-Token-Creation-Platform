@@ -2,7 +2,7 @@
 
 import { GradientButton } from '@/components/component/Button';
 import { cn } from '@/lib/utils';
-import { Check, Copy, Edit, Save, X } from 'lucide-react';
+import { Check, ChevronRight, Copy, Edit, Save, X } from 'lucide-react';
 import { ChangeEvent, useState } from 'react';
 import copy from 'clipboard-copy';
 
@@ -10,6 +10,7 @@ const Page = () => {
   const [password, setPassword] = useState<string>('');
   const [isPassed, setIsPassed] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [adminData, setAdminData] = useState<{ fee: number; publicKey: string }>({
     publicKey: '',
     fee: 0,
@@ -34,21 +35,31 @@ const Page = () => {
   }
 
   async function handleSubmit() {
-    const response = await fetch('/api/auth/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ password }),
-    });
-    const data = await response.json();
-    setIsPassed(data.success);
-    if (data.success) {
-      console.log(data.publicKey, data.fee);
-      setAdminData({
-        publicKey: data.publicKey,
-        fee: data.fee,
+    if (password.trim() === '') {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/auth/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
       });
+      const data = await response.json();
+      setIsPassed(data.success);
+      if (data.success) {
+        console.log(data.publicKey, data.fee);
+        setAdminData({
+          publicKey: data.publicKey,
+          fee: data.fee,
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
     }
   }
 
@@ -101,20 +112,17 @@ const Page = () => {
         <div className='flex flex-col justify-center items-center w-full px-4 md:px-8'>
           <div className='flex gap-4 md:gap-8 items-center justify-between border w-full max-w-full py-2 px-4 md:px-8 overflow-hidden'>
             <p className='text-xs md:text-base whitespace-nowrap md:w-20 w-16'>Public Key</p>
-            <div className='flex items-center justify-between gap-2 md:gap-4 text-left text-xs md:text-base max-w-[65%] overflow-x-auto no-scrollbar'>
+            <div className='flex items-center justify-center gap-2 py-1 md:gap-4 w-full text-left text-xs md:text-base max-w-[65%] overflow-x-auto no-scrollbar'>
               {isEdit === 'Public Key' ? (
                 <input
-                  className='text-gray-700 mx-2 md:mx-6 py-1 px-2 outline-none rounded-sm w-full'
+                  className='text-gray-700 px-2 outline-none py-1 rounded-sm w-full'
                   name='publicKey'
                   value={adminData.publicKey}
                   onChange={handleChange}
                 />
               ) : (
-                <p className='py-1'>{adminData.publicKey}</p>
+                <p className='py-1 text-xs md:text-base'>{adminData.publicKey}</p>
               )}
-              {/* <button className='hover:text-gray-400 transition-colors' onClick={() => setIsShow(!isShow)}>
-                {isShow ? <EyeOff /> : <Eye />}
-              </button> */}
             </div>
             <div className='flex gap-2'>
               <button className='hover:text-gray-400 transition-colors'>
@@ -137,16 +145,16 @@ const Page = () => {
           </div>
           <div className='flex gap-4 md:gap-8 items-center justify-between border w-full last:border-t-0 py-2 px-4 md:px-8'>
             <p className='md:w-20 w-16 text-xs md:text-base'>Fee</p>
-            <div className='overflow-hidden text-left py-1 '>
+            <div className='overflow-hidden text-left py-1 text-xs md:text-base'>
               {isEdit === 'Fee' ? (
                 <input
-                  className='text-gray-700 flex-1 mx-2 md:mx-6 py-1 px-2 outline-none rounded-sm'
+                  className='text-gray-700 flex-1 py-1 px-2 outline-none rounded-sm'
                   name='fee'
                   value={adminData.fee}
                   onChange={handleChange}
                 />
               ) : (
-                <p className='text-xs md:text-base'>{adminData.fee}</p>
+                <p className='py-1'>{adminData.fee}</p>
               )}
             </div>
             <div className='flex gap-2'>
@@ -186,7 +194,15 @@ const Page = () => {
               }
             }}
           />
-          <GradientButton onClick={handleSubmit}>Submit</GradientButton>
+
+          <GradientButton disabled={isLoading} className='w-36' onClick={handleSubmit}>
+            Submit
+            {!isLoading ? (
+              <ChevronRight />
+            ) : (
+              <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />
+            )}
+          </GradientButton>
         </div>
       )}
     </section>
