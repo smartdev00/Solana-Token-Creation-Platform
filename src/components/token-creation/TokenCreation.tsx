@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ChevronRight, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
 import { GradientBorderButton, GradientButton } from '../component/Button';
@@ -17,7 +17,15 @@ import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
 import Link from 'next/link';
 
-const TokenCreation = () => {
+const TokenCreation = ({
+  setError,
+  pubKey,
+  initialFee,
+}: {
+  initialFee: number;
+  pubKey: string | null;
+  setError: Dispatch<SetStateAction<string | null>>;
+}) => {
   const [currentProgress, setCurrentProgress] = useState<number>(1);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
@@ -30,23 +38,11 @@ const TokenCreation = () => {
     mintable: true,
     updateable: true,
   });
-  const [error, setError] = useState<string | null>(null);
-  const [pubKey, setPubKey] = useState<string | null>(null);
   const [mintAddress, setMintAddress] = useState<string | null>('');
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
 
   useEffect(() => {
-    const handleClickErrorOutside = (event: MouseEvent) => {
-      if ((event.target as HTMLElement).id === 'error-modal') {
-        setError(null);
-      }
-    };
-
-    if (error) {
-      document.addEventListener('mousedown', handleClickErrorOutside);
-    }
-
     const handleClickSuccessOutside = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'success-modal') {
         setMintAddress(null);
@@ -58,25 +54,9 @@ const TokenCreation = () => {
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickErrorOutside);
       document.removeEventListener('mousedown', handleClickSuccessOutside);
     };
-  }, [error, mintAddress]);
-
-  useEffect(() => {
-    const fetchPublicKey = async () => {
-      const response = await fetch('/api/admin', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      console.log(data.pubKey);
-      setPubKey(data.pubKey);
-    };
-    fetchPublicKey();
-  }, []);
+  }, [mintAddress]);
 
   async function handleNextOrCreateClick() {
     try {
@@ -84,14 +64,14 @@ const TokenCreation = () => {
         setCurrentProgress(currentProgress + 1);
       } else if (currentProgress === 3) {
         setIsCreating(true);
-        console.log('tokenMetaData', tokenMetaData);
+        console.log('tokenMetaData', tokenMetaData, 'pubKey:', pubKey);
         if (!(publicKey && connected && pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
         const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
         // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
-        let fee = 0.11;
+        let fee = initialFee;
         if (tokenMetaData.enableCreator) fee += 0.1;
         if (tokenMetaData.mintable) fee += 0.1;
         if (tokenMetaData.freezeable) fee += 0.1;
@@ -357,36 +337,6 @@ const TokenCreation = () => {
           )}
         </div>
       </div>
-
-      {error && (
-        <div
-          className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
-          id='error-modal'
-          // onClick={() => setError(null)}
-        >
-          <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
-            <div className='p-6'>
-              <div className='flex items-center gap-2 mb-6'>
-                <button
-                  className='h-8 w-8 rounded-full bg-red-500/20 flex items-center justify-center'
-                  onClick={() => setError(null)}
-                >
-                  <X className='text-red-500' />
-                </button>
-                <h2 className='text-xl font-semibold text-white'>Error Creating Token</h2>
-              </div>
-              <div className='space-y-6'>
-                <div className='p-4 rounded bg-red-500/10 border border-red-500/20'>
-                  <p className='text-sm text-red-400'>{error}</p>
-                </div>
-                <div className='border-t border-gray-800 pt-4'>
-                  <p className='text-sm text-gray-400'>Please try again or contact support if the issue persists.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {mintAddress && (
         <div

@@ -99,7 +99,7 @@ const Page = () => {
   }
 
   return (
-    <section className='text-gray-300 min-h-[calc(100vh-300px)] flex justify-center items-center flex-col gap-4 md:gap-8'>
+    <section className='text-gray-300 min-h-[calc(100vh-300px)] flex justify-center items-center flex-col gap-4 md:gap-8 pt-[78px] md:pt-[93px]'>
       <h2
         className={cn(
           'text-center text-transparent text-3xl md:text-5xl mt-4 md:mt-6 font-medium',

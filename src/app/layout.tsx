@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <AppWalletProvider>
           <Header />
-          <main className='mt-[78px] md:mt-[93px] flex-1'>{children}</main>
+          <main className='flex-1'>{children}</main>
           <Footer />
         </AppWalletProvider>
       </body>

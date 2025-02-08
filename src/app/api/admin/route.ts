@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import { Admin } from '../models/model';
+import connectDB from '@/lib/mongodb';
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,14 +27,17 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    // Remove the body parsing for GET requests
+    connectDB();
     const data = await Admin.findOne();
+    console.log(data);
     if (data?.publicKey) {
-      return NextResponse.json({ pubKey: data.publicKey }, { status: 200 });
+      return NextResponse.json({ pubKey: data.publicKey, fee: data.fee }, { status: 200 });
     } else {
-      return NextResponse.json({ pubKey: 'PubKey not found' }, { status: 404 });
+      return NextResponse.json({ message: 'Data not found' }, { status: 404 });
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ message: 'Invalid Server Error' }, { status: 500 });
+    return NextResponse.json({ message: error.message || 'Invalid Server Error' }, { status: 500 });
   }
 }
