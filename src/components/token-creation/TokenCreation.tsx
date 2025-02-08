@@ -78,8 +78,9 @@ const TokenCreation = ({
         if (tokenMetaData.updateable) fee += 0.1;
 
         const balance = await connection.getBalance(publicKey);
+        console.log('balance', balance, fee);
 
-        if (balance < fee) {
+        if (balance < fee * 1e9) {
           throw new Error(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
         }
 
