@@ -1,44 +1,30 @@
 import Link from 'next/link';
-import { MouseEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
-export const LinkButton = ({
-  children,
-  href,
-  className,
-  disabled,
-}: {
-  children: ReactNode;
-  href?: string;
-  disabled?: boolean;
-  className?: string;
-}) => {
-  const handleClick = (event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
-    if (disabled) {
-      event.preventDefault();
-    }
-  };
+export const LinkButton = ({ children, href, soon }: { children: ReactNode; href?: string, soon: boolean }) => {
+  // 'bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text hover:from-cyan-300 hover:to-purple-400'
   return (
     <Link
       href={href || ''}
       className={cn(
         'px-4 py-2 group relative text-transparent transition-all text-sm md:text-base font-medium tracking-wide',
-        `bg-gradient-to-r ${
-          disabled ? 'from-gray-400 to-gray-700' : 'from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400'
-        } bg-clip-text`,
-        className
+        // 'bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text hover:from-cyan-300 hover:to-purple-400'
+        'text-gray-50/50'
       )}
-      onClick={(e) => handleClick(e)}
     >
-      {children}
-      <div
-        className={cn(
-          `absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group`,
-          `${!disabled && 'group-hover:opacity-100'} transition-opacity duration-200`
-        )}
-      />
-      {disabled && <span className='absolute text-gray-400 text-xs rounded-full py-0.5 bg-cyan-500/5 px-2'>soon</span>}
+      <div className='flex flex-row gap-2 justify-center items-center'>
+        <div>
+          {children}
+        </div>
+        {soon?
+          <div className='flex px-2 rounded-xl text-sm text-white text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
+            Soon
+          </div>
+          :<></>}
+        <div className='absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
+      </div>
     </Link>
   );
 };
@@ -55,7 +41,7 @@ export const GradientBorderButton = ({
     <button
       className={cn(
         'gradient-button rounded-2xl flex items-center p-0.5 justify-center h-[52px]',
-        'bg-gradient-to-tr from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400'
+        'bg-gradient-to-tr from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400',
       )}
       onClick={onClick}
     >
