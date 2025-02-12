@@ -76,18 +76,20 @@ export const GradientButton = ({
   onClick?: () => void;
 }) => {
   return (
-    <button
-      className={
-        className +
-        ' gradient-button text-white inline-flex relative items-center gap-2 border-none transition-all font-medium shadow-[0 0 15px rgba(6, 182, 212, .2)]' +
-        ' rounded-2xl px-8 py-3 bg-gradient-to-r from-cyan-400 to-purple-500' +
-        ' disabled:opacity-50 disabled:cursor-not-allowed'
-      }
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <div className='gradient-btn gradient-one w-full'>
+      <button
+        className={cn(
+          'gradient-button flex justify-center items-center rounded-full group',
+          'hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 disabled:bg-gradient-to-r disabled:from-blue-custom disabled:to-purple-custom',
+          className
+        )}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {children}
+        <div className='fill-one sm:w-[400px] w-[calc(200vw-192px)] -ml-[calc(100vw-92px)] sm:-ml-[200px] group-hover:ml-0 sm:group-hover:translate-x-[100px] group-disabled:bg-none' />
+      </button>
+    </div>
   );
 };
 

@@ -73,13 +73,38 @@ body {
 }
 
 .gradient-button {
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
-  transition: all 0.3s ease;
+  position: relative;
+  border: 0;
+  color: white;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.gradient-button:hover {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(139, 92, 246, 0.2);
-  transform: translateY(-1px);
+.gradient-btn {
+  text-align: center;
+  position: relative;
+}
+
+.fill-one {
+  position: absolute;
+  background-image: linear-gradient(to right, #5b1b8c, #2a39ff, #5b1b8c);
+  height: 54px;
+  border-radius: 5px;
+  z-index: -1;
+  transition: all 0.4s ease;
+}
+
+.gradient-button:hover .fill-one {
+  -webkit-transform: translateX(200px);
+  -moz-transform: translateX(200px);
+  transform: translateX(200px);
+}
+
+.create-token-first {
+  background-image: url('/public/waves.png');
+  background-size: cover;
+  width: 100%;
+  z-index: 50;
 }
 
 .form-card {
@@ -101,6 +126,42 @@ body {
 .subtitle-animate {
   opacity: 0;
   animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-moz-keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes fadeInUp {

@@ -1,43 +1,31 @@
-const CircleItem = ({ currentProgress, number }: { currentProgress: number; number: number }) => {
+import { progresses } from '@/lib/constants';
+import { ProgressType } from '@/lib/types';
+import { Dispatch, SetStateAction } from 'react';
+
+const ProgressItem = ({ current, value }: { current: number; value: ProgressType }) => {
   return (
     <div
-      className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center ${
-        currentProgress >= number
-          ? 'text-white bg-gradient-to-tr from-cyan-400 to-purple-500 shadow-[0_0_10px_rgba(6,182,212,0.6)]'
-          : 'text-gray-400 bg-gray-700 bg-opacity-50'
-      }`}
+      className={`flex items-center px-4 rounded-[30px] text-xl font-normal border ${
+        Number(value.id) === current ? 'text-secondary border-secondary' : 'text-white border-[#3B4457]'
+      }  h-12 transition-all`}
     >
-      {number}
+      {value.id} {Number(value.id) === current && value.title}
     </div>
   );
 };
 
-const LineItem = ({ currentProgress, number }: { currentProgress: number; number: number }) => {
+const Progress = ({
+  currentProgress,
+  // setCurrentProgress,
+}: {
+  currentProgress: number;
+  setCurrentProgress?: Dispatch<SetStateAction<number>>;
+}) => {
   return (
-    <div
-      className={`${
-        currentProgress > number ? 'bg-gradient-to-r from-cyan-400 to-purple-500 shadow-[0_0_10px_rgba(6,182,212,0.6)]' : 'bg-gray-700'
-      } h-1 mx-2 md:mx-4 flex-1`}
-    />
-  );
-};
-
-const Progress = ({ currentProgress }: { currentProgress: number }) => {
-  return (
-    <div className='subtitle-animate flex justify-between mb-4 md:mb-6'>
-      <div className='flex items-center flex-1'>
-        <CircleItem currentProgress={currentProgress} number={1} />
-        <LineItem currentProgress={currentProgress} number={1} />
-      </div>
-
-      <div className='flex items-center flex-1'>
-        <CircleItem currentProgress={currentProgress} number={2} />
-        <LineItem currentProgress={currentProgress} number={2} />
-      </div>
-
-      <div className='flex items-center'>
-        <CircleItem currentProgress={currentProgress} number={3} />
-      </div>
+    <div className='subtitle-animate flex justify-center mb-4 md:mb-6 gap-2.5'>
+      {progresses.map((progress) => {
+        return <ProgressItem key={progress.id} value={progress} current={currentProgress} />;
+      })}
     </div>
   );
 };

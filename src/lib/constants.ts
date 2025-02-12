@@ -1,5 +1,5 @@
 import { Coins, Lock, Pencil } from 'lucide-react';
-import { FAQType, HelpType, PromoteItemType, RevokeAuthorityType } from './types';
+import { FAQType, HelpType, ProgressType, PromoteItemType, RevokeAuthorityType } from './types';
 
 export const faqs: FAQType[] = [
   {
@@ -81,7 +81,7 @@ export const promoteItems: PromoteItemType[] = [
     fromColor: 'from-blue-500',
     viaColor: 'via-purple-500',
     toColor: 'to-pink-500',
-    textColor: 'text-blue-400'
+    textColor: 'text-blue-400',
   },
   {
     id: 1,
@@ -91,7 +91,7 @@ export const promoteItems: PromoteItemType[] = [
     fromColor: 'from-yellow-500',
     viaColor: 'via-purple-500',
     toColor: 'to-pink-500',
-    textColor: 'text-yellow-400'
+    textColor: 'text-yellow-400',
   },
   {
     id: 3,
@@ -101,6 +101,25 @@ export const promoteItems: PromoteItemType[] = [
     fromColor: 'from-green-500',
     viaColor: 'via-blue-500',
     toColor: 'to-purple-500',
-    textColor: 'text-green-400'
+    textColor: 'text-green-400',
+  },
+];
+
+export const progresses: ProgressType[] = [
+  {
+    id: '01',
+    title: 'Set up your Token',
+  },
+  {
+    id: '02',
+    title: 'Token Configurations',
+  },
+  {
+    id: '03',
+    title: 'Creator Information',
+  },
+  {
+    id: '04',
+    title: 'Revoke Authorities',
   },
 ];
