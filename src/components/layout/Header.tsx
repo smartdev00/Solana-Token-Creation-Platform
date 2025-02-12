@@ -6,11 +6,13 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
+import { useStateContext } from '@/provider/StateProvider';
 
 const Header = () => {
   const [shortenedWallet, setShortenedWallet] = useState<string | null>(null);
   const [openNavModal, setOpenNavModal] = useState<boolean>(false);
   const { publicKey } = useWallet();
+  const { initialFee } = useStateContext();
 
   useEffect(() => {
     if (publicKey) {
@@ -24,7 +26,7 @@ const Header = () => {
     <div>
       <div className='fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-cyan-500 to-purple-600'>
         <div className='py-1.5 text-center text-[9px] leading-none md:text-xs text-white font-bold tracking-wide'>
-          LAUNCH YOUR OWN TOKEN FOR ONLY 0.1 SOL - 50% OFF
+          LAUNCH YOUR OWN TOKEN FOR ONLY {initialFee} SOL
         </div>
       </div>
       <nav className='fixed top-[21px] md:top-[28px] left-0 right-0 z-50 bg-gray-800/50 backdrop-blur-sm border-b border-gray-700/50'>
@@ -47,8 +49,7 @@ const Header = () => {
             <div className='md:flex justify-center space-x-4 hidden'>
               <LinkButton href='/'>Create Token</LinkButton>
               <LinkButton href='https://raydium.io/liquidity/create-pool/'>Liquidity Pool</LinkButton>
-              <LinkButton href='/promote'>Promote Token</LinkButton>
-              <LinkButton href='/trending'>Trending 🔥</LinkButton>
+              <LinkButton href='/promote' disabled={true} className='hover:cursor-not-allowed'>Promote Token</LinkButton>
             </div>
 
             {/* Connect Wallet Button */}
@@ -75,7 +76,6 @@ const Header = () => {
                 <LinkButton href='/'>Create Token</LinkButton>
                 <LinkButton href='https://raydium.io/liquidity/create-pool/'>Liquidity Pool</LinkButton>
                 <LinkButton href='/promote'>Promote Token</LinkButton>
-                <LinkButton href='/trending'>Trending 🔥</LinkButton>
               </div>
             </div>
           </div>
