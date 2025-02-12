@@ -4,6 +4,7 @@ import FAQ from '@/components/FAQ';
 import Help from '@/components/Help';
 import TokenCreation from '@/components/token-creation/TokenCreation';
 import TokenLaunchBanner from '@/components/TokenLaunchBanner';
+import { useStateContext } from '@/provider/StateProvider';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -14,6 +15,7 @@ export default function Home() {
     pubKey: '',
     fee: 0,
   });
+  const { setInitialFee } = useStateContext();
 
   useEffect(() => {
     const fetchPublicKey = async () => {
@@ -36,6 +38,7 @@ export default function Home() {
         if (data && data.pubKey) {
           console.log('Received pubKey:', data.pubKey, data.fee); // Log what you received
           setConfigData({ pubKey: data.pubKey, fee: data.fee });
+          setInitialFee(data.fee);
         } else {
           // Handle cases where the response isn't what you expect
           throw new Error('Invalid response format from /api/admin');
@@ -49,8 +52,9 @@ export default function Home() {
     };
 
     fetchPublicKey();
-  }, []);
+  }, [setInitialFee]);
 
+  // When user click outsite of error modal
   useEffect(() => {
     const handleClickErrorOutside = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'error-modal') {

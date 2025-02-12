@@ -31,6 +31,11 @@ export type TokenMetaDataType = {
   updateable: boolean;
 };
 
+export type ProgressType = {
+  id: string;
+  title: string;
+};
+
 export type RevokeAuthorityType = {
   id: number;
   title: string;

@@ -1,21 +1,21 @@
 'use client';
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { ChevronRight, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
+import { Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
-import { GradientBorderButton, GradientButton } from '../component/Button';
+import { GradientButton } from '../component/Button';
 import TextField from '../component/TextField';
 import ImageUpload from '../component/ImageUpload';
 import { TokenMetaDataType } from '@/lib/types';
 import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from '@solana/web3.js';
 import { createTokenCreationTransaction } from '@/lib/web3';
 import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const TokenCreation = ({
   setError,
@@ -26,7 +26,7 @@ const TokenCreation = ({
   pubKey: string | null;
   setError: Dispatch<SetStateAction<string | null>>;
 }) => {
-  const [currentProgress, setCurrentProgress] = useState<number>(1);
+  const [currentProgress, setCurrentProgress] = useState<number>(0);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
     symbol: '',
@@ -42,6 +42,7 @@ const TokenCreation = ({
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
 
+  // If user clicks outside of success model
   useEffect(() => {
     const handleClickSuccessOutside = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'success-modal') {
@@ -58,6 +59,7 @@ const TokenCreation = ({
     };
   }, [mintAddress]);
 
+  // If user clicks next or create token button
   async function handleNextOrCreateClick() {
     try {
       if (currentProgress < 3) {
@@ -167,40 +169,61 @@ const TokenCreation = ({
   }
 
   return (
-    <div className='pt-8 max-w-4xl mx-auto !mb-6 px-2 md:px-4 subtitle-animate'>
-      {!!publicKey && <Progress currentProgress={currentProgress} />}
-      <div className='bg-gradient-to-r from-cyan-400 p-0.5 to-purple-500 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.15)]'>
-        <div className='space-y-6 bg-[#141F2E] rounded-xl p-8'>
-          {!!!publicKey && (
-            <div className='text-center py-2'>
-              <p className='text-gray-300 mb-3'>Please connect your wallet to continue</p>
-              <WalletMultiButton
-                style={{
-                  backgroundImage: 'linear-gradient(to right, #06b6d4, #8b5cf6)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  padding: '.01rem 2rem',
-                  borderRadius: '.5rem',
-                }}
+    <div className='pt-8 max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
+      {currentProgress !== 0 && (
+        <div className='space-y-4 mb-12'>
+          <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
+          <p className='text-xs sm:text-xl text-dark-200 text-center'>
+            The cost of creating the token is <span className='text-secondary'>0.1 SOL</span>, which covers all fees
+            needed for the SPL Token creation.
+          </p>
+        </div>
+      )}
+      {currentProgress !== 0 && <Progress currentProgress={currentProgress} setCurrentProgress={setCurrentProgress} />}
+      <div className='relative rounded-xl bg-dark-300 border-dark-400 border py-8 px-4 overflow-hidden'>
+        {currentProgress === 0 && (
+          <Image
+            alt='waves'
+            src='/waves.png'
+            className='absolute md:w-full sm:w-[150vw] w-[200vw] max-w-[10000px] -left-1/2 sm:-left-1/3 md:left-0 bottom-0'
+            width={1000}
+            height={300}
+          />
+        )}
+
+        <div className='space-y-6 rounded-xl'>
+          {/* Progress O */}
+          {currentProgress === 0 && (
+            <div className='relative flex flex-col items-center space-y-8 create-token-first w-full p-4 sm:p-8'>
+              <div className='space-y-4'>
+                <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
+                <p className='text-xs sm:text-xl text-dark-200 text-center'>
+                  The cost of creating the token is <span className='text-secondary'>0.1 SOL</span>, which covers all
+                  fees needed for the SPL Token creation.
+                </p>
+              </div>
+              <GradientButton
+                className='w-full sm:w-[200px] h-[54px] justify-self-center'
+                onClick={() => setCurrentProgress(currentProgress + 1)}
               >
-                Select Wallet
-              </WalletMultiButton>
+                Create Token
+              </GradientButton>
             </div>
           )}
 
           {/* Progress I */}
-          {!!publicKey && currentProgress === 1 && (
+          {currentProgress === 1 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
                 <TextField
-                  label='Token Name'
+                  label='Token Name *'
                   placeholder='Cosmic Coin'
                   name='name'
                   value={tokenMetaData?.name}
                   setTokenMetaData={setTokenMetaData}
                 />
                 <TextField
-                  label='Token Symbol'
+                  label='Token Symbol *'
                   placeholder='CSMC'
                   name='symbol'
                   value={tokenMetaData?.symbol}
@@ -212,11 +235,11 @@ const TokenCreation = ({
           )}
 
           {/* Progress II */}
-          {!!publicKey && currentProgress === 2 && (
+          {currentProgress === 2 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
                 <TextField
-                  label='Decimals'
+                  label='Token Decimals *'
                   placeholder='9'
                   name='decimals'
                   min={0}
@@ -226,7 +249,7 @@ const TokenCreation = ({
                   setTokenMetaData={setTokenMetaData}
                 />
                 <TextField
-                  label='Total Supply'
+                  label='Total Supply *'
                   placeholder='1000000000'
                   name='supply'
                   type='number'
@@ -235,23 +258,26 @@ const TokenCreation = ({
                   setTokenMetaData={setTokenMetaData}
                 />
               </div>
-              <textarea
-                className='mt-6 md:mt-8 w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
-                value={tokenMetaData.description}
-                placeholder="Describe your token's purpose and vision..."
-                onChange={(e) =>
-                  setTokenMetaData((prev) => {
-                    return { ...prev, description: e.target.value };
-                  })
-                }
-              />
+              <div>
+                <span className='block text-gray-300 text-sm font-medium mb-2'>Describe your token</span>
+                <textarea
+                  className='w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
+                  value={tokenMetaData.description}
+                  placeholder='Write text here ...'
+                  onChange={(e) =>
+                    setTokenMetaData((prev) => {
+                      return { ...prev, description: e.target.value };
+                    })
+                  }
+                />
+              </div>
             </div>
           )}
 
           {/* Progress III */}
-          {!!publicKey && currentProgress === 3 && (
+          {currentProgress === 3 && (
             <div>
-              <div className='space-y-4'>
+              <div className='grid grid-cols-4 gap-6'>
                 <TextField
                   placeholder='https://yourmemecoin.fun'
                   name='website'
@@ -298,22 +324,21 @@ const TokenCreation = ({
                 </TextField>
               </div>
               <ModifyCreatorInformation setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} />
+            </div>
+          )}
+
+          {/* Progress IV */}
+          {currentProgress === 4 && (
+            <div>
               <RevokeAuthority setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} />
             </div>
           )}
 
           {/* Back, Next and Create Token Buttons */}
-          {!!publicKey && (
-            <div className='w-full flex flex-1 justify-between pt-4'>
-              {currentProgress > 1 ? (
-                <GradientBorderButton onClick={() => setCurrentProgress(currentProgress - 1)}>
-                  Back
-                </GradientBorderButton>
-              ) : (
-                <div />
-              )}
+          {currentProgress !== 0 && (
+            <div className='w-full flex flex-1 justify-end pt-4'>
               <GradientButton
-                className='justify-self-end'
+                className='justify-self-end sm:w-[200px] h-[54px] w-full'
                 onClick={handleNextOrCreateClick}
                 disabled={
                   (currentProgress === 1 &&
@@ -327,10 +352,8 @@ const TokenCreation = ({
                   isCreating
                 }
               >
-                {currentProgress === 3 ? 'Create Token' : 'Next'}
-                {!isCreating ? (
-                  <ChevronRight width={16} height={16} />
-                ) : (
+                {currentProgress === 3 ? 'Create Token' : 'Continue'}
+                {isCreating && (
                   <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />
                 )}
               </GradientButton>

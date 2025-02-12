@@ -55,16 +55,7 @@ const ImageUpload = ({
         ref={fileInputRef}
       />
       <div
-        className='rounded-xl p-4 md:p-8 text-center hover:border-cyan-500 transition-colors cursor-pointer'
-        style={{
-          position: 'relative',
-          background: 'rgb(23, 30, 46)',
-          boxShadow: 'rgba(6, 182, 212, 0.2) 0px 0px 15px',
-          borderStyle: 'dotted',
-          borderWidth: '2px',
-          borderColor: 'rgb(6, 182, 212)',
-          borderRadius: '1rem',
-        }}
+        className='relative rounded-lg border-gray-600 gap-2.5 p-4 md:p-8 text-center bg-gray-700 border-dashed border-2 transition-colors cursor-pointer'
         onClick={handleClickDiv}
       >
         {!!tokenMetaData.logo?.name === false ? (
@@ -83,8 +74,8 @@ const ImageUpload = ({
 
         {!!tokenMetaData.logo?.name === false ? (
           <div>
-            <p className='text-gray-300 font-medium text-sm md:text-base'>Drop your 500 x 500 token logo here</p>
-            <p className='text-gray-500 text-xs md:text-sm mt-2'>PNG, JPG, GIF up to 5MB</p>
+            <p className='text-gray-300 font-medium text-sm md:text-base'>Click to upload or drag and drop</p>
+            <p className='text-gray-300 font-medium text-sm md:text-base'>SVG, PNG, JPG or GIF (MAX. 400 &times; 400)</p>
           </div>
         ) : (
           <div className='space-y-2 mt-2'>

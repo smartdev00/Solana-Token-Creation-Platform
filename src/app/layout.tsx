@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AppWalletProvider from '@/provider/AppWalletProvider';
+import { StateContextProvider } from '@/provider/StateProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,11 +31,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased w-full bg-gradient-to-br from-gray-900 via-[#0c1527] to-main min-h-screen flex flex-col`}
       >
-        <AppWalletProvider>
-          <Header />
-          <main className='flex-1'>{children}</main>
-          <Footer />
-        </AppWalletProvider>
+        <StateContextProvider>
+          <AppWalletProvider>
+            <Header />
+            <main className='flex-1'>{children}</main>
+            <Footer />
+          </AppWalletProvider>
+        </StateContextProvider>
       </body>
     </html>
   );
