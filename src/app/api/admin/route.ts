@@ -32,17 +32,7 @@ export async function GET() {
     const data = await Admin.findOne();
     console.log(data);
     if (data?.publicKey) {
-      return NextResponse.json(
-        {
-          pubKey: data.publicKey,
-          fee: data.fee,
-          creatorFee: data.creatorFee,
-          updateableFee: data.updateableFee,
-          freezeableFee: data.freezeableFee,
-          mintableFee: data.mintableFee,
-        },
-        { status: 200 }
-      );
+      return NextResponse.json({ pubKey: data.publicKey, fee: data.fee }, { status: 200 });
     } else {
       return NextResponse.json({ message: 'Data not found' }, { status: 404 });
     }
