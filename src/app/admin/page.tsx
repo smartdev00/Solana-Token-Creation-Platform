@@ -183,7 +183,7 @@ const Page = () => {
             name='password'
             type='password'
             placeholder='Admin Password'
-            className='h-12 rounded-xl px-2 py-0.5'
+            className='h-12 rounded-xl px-3 py-0.5'
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -195,7 +195,7 @@ const Page = () => {
             }}
           />
 
-          <GradientButton disabled={isLoading} className='w-36' onClick={handleSubmit}>
+          <GradientButton disabled={isLoading} className='w-36 py-2' onClick={handleSubmit}>
             Submit
             {!isLoading ? (
               <ChevronRight />

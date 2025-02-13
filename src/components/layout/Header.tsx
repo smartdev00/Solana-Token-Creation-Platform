@@ -2,23 +2,26 @@
 
 import { LinkButton } from '../component/Button';
 import { useEffect, useState } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useStateContext } from '@/provider/StateProvider';
 
 const Header = () => {
   const [openNavModal, setOpenNavModal] = useState<boolean>(false);
   const [shortenedWallet, setShortenedWallet] = useState<string | null>(null);
-    const { publicKey } = useWallet();
-    useEffect(() => {
-      if (publicKey) {
-        const str = publicKey.toString().slice(0, 3) + '...' + publicKey.toString().slice(-3);
-        setShortenedWallet(str);
-      } else {
-        setShortenedWallet(null);
-      }
-    }, [publicKey]);
+  const [advert, setAdvert] = useState<boolean>(true);
+  const { publicKey } = useWallet();
+  const {initialFee} = useStateContext()
+  useEffect(() => {
+    if (publicKey) {
+      const str = publicKey.toString().slice(0, 3) + '...' + publicKey.toString().slice(-3);
+      setShortenedWallet(str);
+    } else {
+      setShortenedWallet(null);
+    }
+  }, [publicKey]);
   return (
     <div>
       <nav className='fixed top-[18px] md:top-[40px] left-0 right-0 z-50 backdrop-filter backdrop-blur-sm title-animate'>
@@ -35,11 +38,11 @@ const Header = () => {
             </div>
 
             {/* Desktop Navbar */}
-            <div className='md:flex w-full justify-around items-center space-x-4 hidden'>
+            <div className='md:flex w-full justify-center items-center space-x-4 xl:space-x-24 hidden'>
               <LinkButton href='/' soon={false}>Create Token</LinkButton>
               <LinkButton href='https://raydium.io/liquidity/create-pool/' soon={false}>Liquidity Pool</LinkButton>
               <LinkButton soon={true}>Promote Token</LinkButton>
-              <LinkButton soon={true}>Trending</LinkButton>
+              {/* <LinkButton soon={true}>Trending</LinkButton> */}
             </div>
             {!shortenedWallet && <div className='hidden lg:block'>
               <WalletMultiButton
@@ -73,10 +76,15 @@ const Header = () => {
                 <LinkButton href='/' soon={false}>Create Token</LinkButton>
                 <LinkButton href='https://raydium.io/liquidity/create-pool/' soon={false}>Liquidity Pool</LinkButton>
                 <LinkButton soon={true}>Promote Token</LinkButton>
-                <LinkButton soon={true}>Trending</LinkButton>
+                {/* <LinkButton soon={true}>Trending</LinkButton> */}
               </div>
             </div>
           </div>
+          {advert &&
+          <div className='relative mt-2 text-center py-2 text-white rounded-md bg-gradient-to-r from-[#2A39FF] to-[#5B1B8C]'>
+            <p className='md:mx-16 ml-2 mr-8 md:text-sm text-xs'>LAUNCH TOKEN ONLY {initialFee} SOL - 50% OFF</p>
+            <X className='absolute md:right-5 right-2 top-1/2 transform -translate-y-1/2 cursor-pointer' onClick={() => setAdvert(false)}/>
+          </div>}
         </div>
       </nav>
     </div>
