@@ -28,7 +28,8 @@ const Header = () => {
         </div>
       </div> */}
       <nav className='fixed top-[21px] md:top-[28px] left-0 right-0 z-50 backdrop-blur-sm title-animate'>
-        <div className='container mx-auto'>
+        {/* <div className='container mx-auto'> */}
+        <div className='pt-8 max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
           <div className='flex justify-between items-center h-16 md:h-20 px-6 bg-gray-800/50 rounded-2xl border border-gray-700'>
             {/* Logo */}
             <div className='flex cursor-pointer space-x-2 md:space-x-3 items-center'>
@@ -73,7 +74,7 @@ const Header = () => {
             <div
               className={`${
                 openNavModal ? 'block' : 'hidden'
-              } lg:hidden absolute top-full left-0 right-0 bg-gray-800/95 backdrop-blur-sm border-b border-gray-700/50`}
+              } lg:hidden absolute top-full sm:left-12 sm:right-12 left-4 right-4 rounded-2xl bg-gray-800/95 backdrop-blur-sm border-b border-gray-700/50`}
             >
               <div className='px-4 py-3 space-y-3 flex flex-col'>
                 <LinkButton href='/' soon={false}>Create Token</LinkButton>

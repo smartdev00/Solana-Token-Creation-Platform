@@ -74,9 +74,9 @@ export default function Home() {
     <div className='pt-[78px] md:pt-[93px]'>
       <TokenLaunchBanner />
       <TokenCreation setError={setError} pubKey={configData.pubKey} initialFee={configData.fee} />
-      <div className='max-w-4xl mx-auto space-y-6 pb-6 md:pb-12 px-2 md:px-4'>
-        <Help />
+      <div className='max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
         <FAQ />
+        <Help />
       </div>
       {error && (
         <div

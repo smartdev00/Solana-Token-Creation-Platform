@@ -3,7 +3,9 @@ import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 export type HelpType = {
   id: number;
+  title: string;
   text: string;
+  img: string;
 };
 
 export type FAQType = {
