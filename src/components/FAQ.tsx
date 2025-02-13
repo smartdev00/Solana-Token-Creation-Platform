@@ -19,7 +19,7 @@ const FAQItem = ({
     else setId(content.id);
   };
   return (
-    <div className='border-b border-gray-700 last:border-0 pb-2 last:pb-0'>
+    <div className='bg-[#181F2F] p-5 border border-[#3B4457] rounded-2xl cursor-pointer subtitle-animate' >
       <button className='flex w-full justify-between items-center' onClick={handleClickFaq}>
         <span className='text-gray-200 font-medium text-left'>{content.question}</span>
         <Plus
@@ -38,11 +38,20 @@ const FAQItem = ({
 const FAQ = () => {
   const [id, setId] = useState<number | null>(null);
   return (
-    <div className='container subtitle-animate bg-gray-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-xl border border-gray-700'>
-      <h2 className='subtitle-animate bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent text-2xl md:text-3xl font-bold mb-4 md:mb-6'>
-        Frequently Asked Questions
-      </h2>
-      <div className='space-y-2'>
+    // <div className='subtitle-animate bg-gray-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-xl border border-gray-700'>
+    <div className='flex flex-col lg:flex-row pt-28 gap-8 subtitle-animate'>
+      <div className='flex flex-col w-full mr-20'>
+        <div className='mb-4 md:mb-6 text-2xl sm:text-5xl text-white subtitle-animate'>
+          Frequently Asked Questions
+        </div>
+        <div className='w-8/12 text-[#A4B0C8]'>
+          For support and inquiries, reach out to us on Telegram
+          <a className="px-2 py-2 text-[#C0A3FF] cursor-pointer">
+            @coinfastofficial.
+          </a>
+        </div>
+      </div>
+      <div className='space-y-5'>
         {faqs.map((faq) => {
           return <FAQItem content={faq} key={faq.id} open={id === faq.id} setId={setId} />;
         })}

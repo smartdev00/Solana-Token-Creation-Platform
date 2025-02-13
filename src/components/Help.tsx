@@ -1,38 +1,48 @@
 import { helps } from '@/lib/constants';
-
+import HelpConnectWallet from './component/HelpConnectWallet';
+import HelpTokenNameSymbol from './component/HelpTokenNameSymbol';
 const Help = () => {
   return (
-    <div className='container subtitle-animate bg-gray-800/50 backdrop-blur-xl rounded-2xl p-4 md:p-6 shadow-xl border border-gray-700'>
-      <h2 className='bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent text-2xl md:text-3xl font-bold mb-4 md:mb-6'>
-        How to use Solana Token Creator
-      </h2>
-      <h3 className=' text-lg md:text-xl text-gray-200 font-medium mb-2 fade-in-up delay-2'>
-        Follow these simple steps:
-      </h3>
-      <ol className='space-y-1.5'>
+    <div className='mt-28 subtitle-animate'>
+      <div className='mb-4 md:mb-6 text-2xl sm:text-5xl text-white'>
+        How to Create Solana Token
+      </div>
+      <ol className='grid grid-cols-12 -mx-2.5'>
         {helps.map((help) => {
           return (
             <li
               key={help.id}
-              className='subtitle-animate flex items-start text-gray-300'
+              className={`flex md:flex-row flex-col ${help.id>5?'col-span-12':help.id<3?'md:col-span-6 col-span-12':'md:col-span-4 col-span-12'} m-2.5 rounded-2xl text-gray-300 bg-[#181F2F] border border-[#2A3755]`}
               style={{ animationDelay: `${0.2 + help.id * 0.1}s` }}
             >
-              <span className='mr-2 font-medium'>{help.id}.</span>
-              <span>{help.text}</span>
+              <div>
+                <div className='flex flex-row justify-between items-center gap-4 m-5'>
+                  <div className='px-4 py-3 font-normal text-white rounded-full border border-[#2A3755]'>
+                    0{help.id}&nbsp;&nbsp;{help.title}
+                  </div>
+                  {
+                    help.id>2 && help.id<6 && 
+                    <div className='flex justify-center items-center w-14 h-14 px-4 py-3 rounded-full border border-[#2A3755]'>
+                      <img alt={`${help.id}Img`} src={help.img}/>
+                    </div>
+                  }
+                </div>
+                <div className='mx-5 mt-1 mb-5 text-[#A4B0C8] text-justify'>
+                  {help.text}
+                </div>
+                {help.id==1 && <HelpConnectWallet />}
+                {help.id==2 && <HelpTokenNameSymbol/>}
+              </div>
+              {
+                help.id>5 && 
+                <div className='flex justify-center scale-90 md:justify-end items-center w-full my-5 md:m-5'>
+                  <img alt='6stepImg' src='/6step.png'/>
+                </div>
+              }
             </li>
           );
         })}
       </ol>
-      <div className='text-sm md:text-base text-gray-300 border-t border-gray-700 space-y-2 pt-3 mt-3'>
-        <p>
-          The cost of creating the Token is <span className=' text-cyan-400 font-medium'>0.1 SOL</span>, which includes
-          all fees needed for the SPL Token creation.
-        </p>
-        <p>
-          The creation process will start and will take some seconds. After that, you will receive the total supply of
-          the token in the wallet you chose.
-        </p>
-      </div>
     </div>
   );
 };

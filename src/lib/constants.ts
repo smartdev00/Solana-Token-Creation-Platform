@@ -35,14 +35,42 @@ export const faqs: FAQType[] = [
 ];
 
 export const helps: HelpType[] = [
-  { id: 1, text: 'Connect your Solana wallet.' },
-  { id: 2, text: 'Write the name you want for your Token.' },
-  { id: 3, text: 'Indicate the symbol (max 8 characters).' },
-  { id: 4, text: 'Select the decimals quantity (0 for Whitelist Token, 6 for utility token).' },
-  { id: 5, text: 'Write the description you want for your SPL Token.' },
-  { id: 6, text: 'Upload the image for your token (PNG).' },
-  { id: 7, text: 'Put the supply of your Token.' },
-  { id: 8, text: 'Click on Create, accept the transaction, and wait until your token is ready.' },
+  { 
+    id: 1, 
+    title: 'Connect Solana wallet', 
+    text: 'Connect your Solana wallet to get started',
+    img: '/'
+  },
+  { 
+    id: 2, 
+    title: 'Choose Token Name and Symbol', 
+    text: 'Give your token a unique name and choose a symbol. The symbol can be up to 8 characters long.',
+    img: '/'
+  },
+  { 
+    id: 3, 
+    title: 'Select Decimal Precision', 
+    text: 'Choose how precise your token can be when used. 0 for Whitelist Token, 6 for utility token',
+    img: '/mouse-pointer.svg'
+  },
+  { 
+    id: 4, 
+    title: 'Write the Description', 
+    text: 'Write a brief description for your SPL Token. Keep it clear and simple to help others understand what your token represents',
+    img: '/edit.svg'
+  },
+  { 
+    id: 5, 
+    title: 'Upload an Image', 
+    text: 'This will represent your token visually. Make sure the image is clear and in PNG format for the best quality',
+    img: '/image.svg'
+  },
+  { 
+    id: 6, 
+    title: 'Set the Supply and Save!', 
+    text: 'Set the total supply for your token. You can choose any amount, depending on your token\'s purpose. Your token is saved now!',
+    img: '/'
+  }
 ];
 
 export const revokeAuthorityItems: RevokeAuthorityType[] = [
