@@ -21,7 +21,7 @@ const ModifyCreatorInformation = ({
         <div>
           <h3 className='text-lg text-gray-200 font-medium'>Modify Creator Information</h3>
           <p className='text-gray-400 text-sm mt-1'>
-            Change the information of the creator in the metadata. By default, it is CoinFast.
+            Change the information of the creator in the metadata. By default, it is CoinForge.
           </p>
         </div>
         <div className='flex items-center space-x-2'>

@@ -62,9 +62,9 @@ const TokenCreation = ({
   // If user clicks next or create token button
   async function handleNextOrCreateClick() {
     try {
-      if (currentProgress < 3) {
+      if (currentProgress < 4) {
         setCurrentProgress(currentProgress + 1);
-      } else if (currentProgress === 3) {
+      } else if (currentProgress === 4) {
         setIsCreating(true);
         console.log('tokenMetaData', tokenMetaData, 'pubKey:', pubKey);
         if (!(publicKey && connected && pubKey && sendTransaction)) {
@@ -352,7 +352,7 @@ const TokenCreation = ({
                   isCreating
                 }
               >
-                {currentProgress === 3 ? 'Create Token' : 'Continue'}
+                {currentProgress === 4 ? 'Create Token' : 'Continue'}
                 {isCreating && (
                   <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />
                 )}

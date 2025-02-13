@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import { faqs } from '@/lib/constants';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FAQType } from '@/lib/types';
+import Link from 'next/link';
 
 const FAQItem = ({
   content,
@@ -21,7 +22,7 @@ const FAQItem = ({
   return (
     <div className='bg-[#181F2F] p-5 border border-[#3B4457] rounded-2xl cursor-pointer subtitle-animate' >
       <button className='flex w-full justify-between gap-5 items-center' onClick={handleClickFaq}>
-        <h4 className='text-gray-200 text-xs sm:text-sm md:text-md lg:text-lg font-medium text-left'>{content.question}</h4>
+        <p className='text-gray-200 text-xs sm:text-sm md:text-md lg:text-lg font-medium text-left'>{content.question}</p>
         <Plus
           width={20}
           height={20}
@@ -46,9 +47,9 @@ const FAQ = () => {
         </h2>
         <p className='w-8/12 text-[#A4B0C8]'>
           For support and inquiries, reach out to us on Telegram
-          <span className="px-2 py-2 text-[#C0A3FF] cursor-pointer">
-            @coinfastofficial.
-          </span>
+          <Link href={'https://t.me/CoinForge_fun'} className="px-2 py-2 text-[#C0A3FF] cursor-pointer">
+            @CoinForge_fun
+          </Link>
         </p>
       </div>
       <div className='space-y-5'>
