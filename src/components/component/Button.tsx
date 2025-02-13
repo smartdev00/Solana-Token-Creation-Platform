@@ -6,26 +6,33 @@ import { cn } from '@/lib/utils';
 export const LinkButton = ({ children, href, soon }: { children: ReactNode; href?: string, soon: boolean }) => {
   // 'bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text hover:from-cyan-300 hover:to-purple-400'
   return (
-    <Link
-      href={href || ''}
-      className={cn(
-        'px-4 py-2 group relative text-transparent transition-all text-sm md:text-base font-medium tracking-wide',
-        // 'bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text hover:from-cyan-300 hover:to-purple-400'
-        'text-gray-50/50'
+    <>
+      {soon ? (
+        <span
+          className={cn(
+            'px-4 py-2 group relative text-transparent transition-all text-sm md:text-base font-medium tracking-wide text-dark-200'
+          )}
+        >
+          <p className="text-center text-[#777e89]">
+            {children}
+          </p>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 transition-opacity duration-200" />
+        </span>
+      ) : (
+        <Link
+          href={href || ''}
+          className={cn(
+            'px-4 py-2 group relative text-transparent transition-all text-sm md:text-base font-medium tracking-wide',
+            'text-dark-200'
+          )}
+        >
+          <p className="text-center">
+            {children}
+          </p>
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+        </Link>
       )}
-    >
-      <div className='flex lg:flex-row md:flex-col flex-row gap-2 justify-center items-center'>
-        <h4 className='text-center'>
-          {children}
-        </h4>
-        {soon?
-          <span className='flex px-2 rounded-xl text-xs text-white text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
-            Soon
-          </span>
-          :<></>}
-        <div className='absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
-      </div>
-    </Link>
+    </>
   );
 };
 

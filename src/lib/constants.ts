@@ -6,7 +6,7 @@ export const faqs: FAQType[] = [
     id: 0,
     question: 'What is Solana, and why should I launch my token on it?',
     answer:
-      'Solana is a high-performance blockchain platform known for its fast transactions, low fees, and scalability. It&apos;s an excellent choice for launching tokens due to its growing ecosystem, strong developer community, and widespread adoption in the crypto space.',
+      'Solana is a high-performance blockchain platform known for its fast transactions, low fees, and scalability. It\'s an excellent choice for launching tokens due to its growing ecosystem, strong developer community, and widespread adoption in the crypto space.',
   },
   {
     id: 1,
@@ -30,7 +30,7 @@ export const faqs: FAQType[] = [
     id: 4,
     question: 'What platfroms can assist with launching a token on Solana',
     answer:
-      'There are several platforms available, including CoinFast (our platform), which provides a user-friendly interface for token creation. Other options include Solana&apos;s CLI tools and various development frameworks, but our platform offers the most straightforward solution for non-technical users.',
+      'There are several platforms available, including CoinForge (our platform), which provides a user-friendly interface for token creation. Other options include Solana&apos;s CLI tools and various development frameworks, but our platform offers the most straightforward solution for non-technical users.',
   },
 ];
 
