@@ -1,4 +1,3 @@
-import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -11,15 +10,7 @@ const Footer = () => {
           </a>
         </p>
         <div className='text-xs text-[#A4B0C8] text-justify'>
-          CoinFast helps you create and launch Solana tokens in seconds with no coding required. CoinFast is a token creation platform. We do not provide financial advice or guarantee any returns. Users are responsible for complying with relevant laws and regulations. Creating and trading tokens carries significant risks - please do your own research before proceeding. The platform is provided "as is" without warranties of any kind. By using CoinFast, you acknowledge and accept all associated risks.
-          {/* © 2025 CoinFast | All Rights Reserved | Support on Telegram{' '}
-          <Link href='' className='text-cyan-400 hover:text-cyan-300 transition-colors'>
-            @coinfastofficial
-          </Link>
-          {' | '}
-          <Link href='' className='text-cyan-400 hover:text-cyan-300 transition-colors'>
-            Become an affiliate for CoinFast
-          </Link> */}
+          CoinFast helps you create and launch Solana tokens in seconds with no coding required. CoinFast is a token creation platform. We do not provide financial advice or guarantee any returns. Users are responsible for complying with relevant laws and regulations. Creating and trading tokens carries significant risks - please do your own research before proceeding. The platform is provided &quot;as is&quot; without warranties of any kind. By using CoinFast, you acknowledge and accept all associated risks.
         </div>
       </div>
     </footer>

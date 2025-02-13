@@ -1,6 +1,7 @@
 import { helps } from '@/lib/constants';
 import HelpConnectWallet from './component/HelpConnectWallet';
 import HelpTokenNameSymbol from './component/HelpTokenNameSymbol';
+import Image from 'next/image';
 const Help = () => {
   return (
     <div className='mt-28 subtitle-animate'>
@@ -23,7 +24,7 @@ const Help = () => {
                   {
                     help.id>2 && help.id<6 && 
                     <div className='flex justify-center items-center w-14 h-14 px-4 py-3 rounded-full border border-[#2A3755]'>
-                      <img alt={`${help.id}Img`} src={help.img}/>
+                      <Image alt={`${help.id}Img`} src={help.img} width={100} height={100}/>
                     </div>
                   }
                 </div>
@@ -36,7 +37,7 @@ const Help = () => {
               {
                 help.id>5 && 
                 <div className='flex justify-center scale-90 md:justify-end items-center w-full my-5 md:m-5'>
-                  <img alt='6stepImg' src='/6step.png'/>
+                  <Image alt='6stepImg' src='/6step.png' width={300} height={300}/>
                 </div>
               }
             </li>
