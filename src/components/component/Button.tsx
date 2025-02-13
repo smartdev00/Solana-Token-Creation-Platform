@@ -14,14 +14,14 @@ export const LinkButton = ({ children, href, soon }: { children: ReactNode; href
         'text-gray-50/50'
       )}
     >
-      <div className='flex flex-row gap-2 justify-center items-center'>
-        <div>
+      <div className='flex lg:flex-row md:flex-col flex-row gap-2 justify-center items-center'>
+        <h4 className='text-center'>
           {children}
-        </div>
+        </h4>
         {soon?
-          <div className='flex px-2 rounded-xl text-sm text-white text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
+          <span className='flex px-2 rounded-xl text-xs text-white text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
             Soon
-          </div>
+          </span>
           :<></>}
         <div className='absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200' />
       </div>
