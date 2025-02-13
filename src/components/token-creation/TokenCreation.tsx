@@ -174,7 +174,7 @@ const TokenCreation = ({
         <div className='space-y-4 mb-12'>
           <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
           <p className='text-xs sm:text-xl text-dark-200 text-center'>
-            The cost of creating the token is <span className='text-secondary'>0.1 SOL</span>, which covers all fees
+            The cost of creating the token is <span className='text-secondary'>{initialFee} SOL</span>, which covers all fees
             needed for the SPL Token creation.
           </p>
         </div>
@@ -198,7 +198,7 @@ const TokenCreation = ({
               <div className='space-y-4'>
                 <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
                 <p className='text-xs sm:text-xl text-dark-200 text-center'>
-                  The cost of creating the token is <span className='text-secondary'>0.1 SOL</span>, which covers all
+                  The cost of creating the token is <span className='text-secondary'>{initialFee} SOL</span>, which covers all
                   fees needed for the SPL Token creation.
                 </p>
               </div>

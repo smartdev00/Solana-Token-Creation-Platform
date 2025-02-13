@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .create-token-first {
-  background-image: url('/public/waves.png');
+  /* background-image: url('/public/waves.png'); */
   background-size: cover;
   width: 100%;
   z-index: 50;
