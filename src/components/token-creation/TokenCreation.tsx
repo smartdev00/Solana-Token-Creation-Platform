@@ -180,7 +180,7 @@ const TokenCreation = ({
         </div>
       )}
       {currentProgress !== 0 && <Progress currentProgress={currentProgress} setCurrentProgress={setCurrentProgress} />}
-      <div className='relative rounded-xl bg-dark-300 border-dark-400 border py-8 px-4 overflow-hidden'>
+      <div className='relative rounded-xl bg-dark-300 border-dark-400 border py-6 px-4 overflow-hidden'>
         {currentProgress === 0 && (
           <Image
             alt='waves'
@@ -228,6 +228,7 @@ const TokenCreation = ({
                   name='symbol'
                   value={tokenMetaData?.symbol}
                   setTokenMetaData={setTokenMetaData}
+                  helperText='Max. 8 symbols'
                 />
               </div>
               <ImageUpload className='mt-6 md:mt-8' tokenMetaData={tokenMetaData} setTokenMetaData={setTokenMetaData} />
@@ -277,7 +278,7 @@ const TokenCreation = ({
           {/* Progress III */}
           {currentProgress === 3 && (
             <div>
-              <div className='grid grid-cols-4 gap-6'>
+              <div className='grid lg:grid-cols-4 gap-6'>
                 <TextField
                   placeholder='https://yourmemecoin.fun'
                   name='website'

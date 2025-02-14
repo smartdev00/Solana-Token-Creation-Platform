@@ -4,13 +4,16 @@ import { Dispatch, SetStateAction } from 'react';
 
 const ProgressItem = ({ current, value }: { current: number; value: ProgressType }) => {
   return (
-    <div
+    <h4
       className={`flex items-center px-4 rounded-[30px] text-xl font-normal border ${
         Number(value.id) === current ? 'text-secondary border-secondary' : 'text-white border-[#3B4457]'
       }  h-12 transition-all`}
     >
-      {value.id} {Number(value.id) === current && value.title}
-    </div>
+      {value.id}
+      <p className='hidden sm:block'>
+        {Number(value.id) === current && <span>&nbsp;{value.title}</span>}
+      </p>
+    </h4>
   );
 };
 

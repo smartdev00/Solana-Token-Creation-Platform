@@ -33,7 +33,7 @@ const TokenLaunchBanner = () => {
         </p>
       </div>
       {/* Connect Wallet Button */}
-      <div className="subtitle-animate mt-4 mb-40 lg:mb-72 md:mb-56">
+      <div className="subtitle-animate mt-4 mb-20 sm:mb-32 lg:mb-64 md:mb-44">
         <WalletMultiButton
           style={{
             // marginBottom: '10rem',

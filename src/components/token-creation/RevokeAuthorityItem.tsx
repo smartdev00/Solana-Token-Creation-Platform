@@ -32,12 +32,12 @@ const RevokeAuthorityItem = ({
       onClick={onClick}
     >
       <span className='absolute rounded-2xl m-0.5 inset-0 border-4 border-transparent bg-main box-border'></span>
-      <div className='relative flex flex-col justify-between h-full'>
+      <div className='relative flex flex-col justify-between h-full w-full'>
         <div className='flex justify-between items-center w-full mb-4'>
-          <div className='border border-white/50 rounded-lg p-2.5 transition-all group-hover:border-cyan-500 group-hover:shadow-[0_0_10px_rgba(59,130,246,.5)]'>
-            {<item.logo className='text-cyan-500' width={20} height={20} />}
+          <span className='text-[#C0A3FF]'>+{item.price} SOL</span>
+          <div className='border rounded-lg p-2.5 transition-all group-hover:border-cyan-500 group-hover:shadow-[0_0_10px_rgba(59,130,246,.5)]'>
+            {<item.logo className='text-[#A4B0C8]' width={20} height={20} />}
           </div>
-          <span className='text-cyan-500'>+{item.price} SOL</span>
         </div>
         <h4 className='font-medium text-gray-100 mb-2 transition-colors group-hover:text-cyan-500'>{item.title}</h4>
         <p className='text-gray-400 text-sm transition-colors group-hover:text-gray-300'>{item.content}</p>

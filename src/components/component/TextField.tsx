@@ -51,7 +51,7 @@ const TextField = ({
         placeholder={placeholder}
         onChange={handleChange}
       />
-      {helperText && <label className='text-gray-500 text-xs mt-1'>{helperText}</label>}
+      {helperText && <label className='text-[#9CA3AF] text-sm mt-1'>{helperText}</label>}
     </div>
   );
 };
