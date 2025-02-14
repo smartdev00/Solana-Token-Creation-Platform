@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AppWalletProvider from '@/provider/AppWalletProvider';
 import { StateContextProvider } from '@/provider/StateProvider';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'CoinForge',
@@ -20,6 +21,17 @@ export default function RootLayout({
       <head>
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-15H4XSTRE5"></Script>
+      <Script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-15H4XSTRE5');
+            `,
+          }}
+        />
       </head>
       <body
         className={`antialiased w-full bg-gradient-to-br from-gray-900 via-[#0c1527] to-main min-h-screen flex flex-col`}
