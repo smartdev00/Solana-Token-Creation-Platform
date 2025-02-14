@@ -38,7 +38,7 @@ const Header = () => {
             </div>
 
             {/* Desktop Navbar */}
-            <div className='md:flex w-full justify-center items-center space-x-4 xl:space-x-24 hidden'>
+            <div className='smd:flex w-full justify-center items-center space-x-4 xl:space-x-24 hidden'>
               <LinkButton href='/' soon={false}>Create Token</LinkButton>
               <LinkButton href='https://raydium.io/liquidity/create-pool/' soon={false}>Liquidity Pool</LinkButton>
               <LinkButton soon={true}>Promote Token</LinkButton>
@@ -60,7 +60,7 @@ const Header = () => {
                 {shortenedWallet ? shortenedWallet : 'Select Wallet'}
               </WalletMultiButton>
             </div>}       
-            <div className='flex w-full md:hidden justify-end'>
+            <div className='flex w-full smd:hidden justify-end'>
               <Menu
                 className='text-gray-400 hover:text-white transition-colors mr-2'
                 onClick={() => setOpenNavModal(!openNavModal)}

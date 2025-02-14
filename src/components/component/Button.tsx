@@ -87,7 +87,7 @@ export const GradientButton = ({
         onClick={onClick}
       >
         {children}
-        <div className='fill-one sm:w-[400px] w-[calc(200vw-192px)] -ml-[calc(100vw-92px)] sm:-ml-[200px] group-hover:ml-0 sm:group-hover:translate-x-[100px] group-disabled:bg-none' />
+        <div className='fill-one sm:w-[400px] w-[calc(220vw)] -ml-[calc(100vw-92px)] sm:-ml-[200px] group-hover:ml-0 sm:group-hover:translate-x-[100px] group-disabled:bg-none' />
       </button>
     </div>
   );
