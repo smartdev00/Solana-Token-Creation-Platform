@@ -1,12 +1,14 @@
 import { revokeAuthorityItems } from '@/lib/constants';
-import { TokenMetaDataType } from '@/lib/types';
+import { Configuration, TokenMetaDataType } from '@/lib/types';
 import { Dispatch, SetStateAction } from 'react';
 import RevokeAuthorityItem from './RevokeAuthorityItem';
 
 const RevokeAuthority = ({
   tokenMetaData,
+  configData,
   setTokenMetaData,
 }: {
+  configData: Configuration;
   tokenMetaData: TokenMetaDataType;
   setTokenMetaData: Dispatch<SetStateAction<TokenMetaDataType>>;
 }) => {
@@ -23,6 +25,7 @@ const RevokeAuthority = ({
             <RevokeAuthorityItem
               item={item}
               key={item.id}
+              price={configData[item.feeType]}
               tokenMetaData={tokenMetaData}
               setTokenMetaData={setTokenMetaData}
             />

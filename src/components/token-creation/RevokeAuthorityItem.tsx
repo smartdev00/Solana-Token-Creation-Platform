@@ -7,9 +7,11 @@ const RevokeAuthorityItem = ({
   item,
   onClick,
   tokenMetaData,
+  price,
   setTokenMetaData,
 }: {
   item: RevokeAuthorityType;
+  price: number | string | null;
   children?: ReactNode;
   className?: string;
   tokenMetaData: TokenMetaDataType;
@@ -34,7 +36,7 @@ const RevokeAuthorityItem = ({
       <span className='absolute rounded-2xl m-0.5 inset-0 border-4 border-transparent bg-main box-border'></span>
       <div className='relative flex flex-col justify-between h-full w-full'>
         <div className='flex justify-between items-center w-full mb-4'>
-          <span className='text-[#C0A3FF]'>+{item.price} SOL</span>
+          <span className='text-[#C0A3FF]'>+{price} SOL</span>
           <div className='border rounded-lg p-2.5 transition-all group-hover:border-cyan-500 group-hover:shadow-[0_0_10px_rgba(59,130,246,.5)]'>
             {<item.logo className='text-[#A4B0C8]' width={20} height={20} />}
           </div>

@@ -18,7 +18,21 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
 
-    return NextResponse.json(newData, { status: 200 });
+    if (!newData) {
+      return NextResponse.json({ message: 'Configuration data not found' }, { status: 403 });
+    }
+
+    return NextResponse.json(
+      {
+        pubKey: newData.publicKey,
+        fee: newData.fee,
+        creatorFee: newData.creatorFee,
+        updateableFee: newData.updateableFee,
+        freezeableFee: newData.freezeableFee,
+        mintableFee: newData.mintableFee,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

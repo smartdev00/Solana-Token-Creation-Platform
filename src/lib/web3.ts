@@ -35,7 +35,7 @@ export async function createTokenCreationTransaction(
 
     const transaction: Transaction = new Transaction();
     const metaData: TokenMetadata = {
-      updateAuthority: tokenMetaData.updateable ? undefined : publicKey,
+      updateAuthority: !tokenMetaData.updateable ? undefined : publicKey,
       mint: tokenMint,
       name: tokenMetaData.name,
       symbol: tokenMetaData.symbol,
@@ -63,7 +63,7 @@ export async function createTokenCreationTransaction(
     // Instruction to initialize the MetadataPointer Extension
     const initializeMetadataPointerInstruction = createInitializeMetadataPointerInstruction(
       tokenMint, // Mint Account address
-      tokenMetaData.updateable ? publicKey : null, // Authority that can set the metadata address
+      !tokenMetaData.updateable ? publicKey : null, // Authority that can set the metadata address
       tokenMint, // Account address that holds the metadata
       TOKEN_2022_PROGRAM_ID
     );
@@ -73,7 +73,7 @@ export async function createTokenCreationTransaction(
       tokenMint, // Mint Account Address
       tokenMetaData.decimals, // Decimals of Mint
       publicKey, // Designated Mint Authority
-      tokenMetaData.freezeable ? publicKey : null, // Optional Freeze Authority
+      !tokenMetaData.freezeable ? publicKey : null, // Optional Freeze Authority
       TOKEN_2022_PROGRAM_ID // Token Extension Program ID
     );
 
@@ -130,7 +130,7 @@ export async function createTokenCreationTransaction(
     );
 
     // Set update authority as null if the mintable is false
-    if (!tokenMetaData.updateable) {
+    if (tokenMetaData.updateable) {
       transaction.add(
         createUpdateAuthorityInstruction({
           metadata: tokenMint,
@@ -142,7 +142,7 @@ export async function createTokenCreationTransaction(
     }
 
     // Set mint authority as null if the mintable is false
-    if (!tokenMetaData.mintable) {
+    if (tokenMetaData.mintable) {
       transaction.add(
         createSetAuthorityInstruction(
           tokenMint,

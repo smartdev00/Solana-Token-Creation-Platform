@@ -16,14 +16,15 @@ import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useStateContext } from '@/provider/StateProvider';
 
 const TokenCreation = ({
   setError,
-  pubKey,
-  initialFee,
-}: {
-  initialFee: number;
-  pubKey: string | null;
+}: // pubKey,
+// initialFee,
+{
+  // initialFee: number;
+  // pubKey: string | null;
   setError: Dispatch<SetStateAction<string | null>>;
 }) => {
   const [currentProgress, setCurrentProgress] = useState<number>(0);
@@ -41,6 +42,7 @@ const TokenCreation = ({
   const [mintAddress, setMintAddress] = useState<string | null>('');
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
+  const { configData } = useStateContext();
 
   // If user clicks outside of success model
   useEffect(() => {
@@ -66,18 +68,18 @@ const TokenCreation = ({
         setCurrentProgress(currentProgress + 1);
       } else if (currentProgress === 4) {
         setIsCreating(true);
-        console.log('tokenMetaData', tokenMetaData, 'pubKey:', pubKey);
-        if (!(publicKey && connected && pubKey && sendTransaction)) {
+        console.log('tokenMetaData', tokenMetaData, 'pubKey:', configData.pubKey);
+        if (!(publicKey && connected && configData.pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
         const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
         // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
-        let fee = initialFee;
-        if (tokenMetaData.enableCreator) fee += 0.1;
-        if (tokenMetaData.mintable) fee += 0.1;
-        if (tokenMetaData.freezeable) fee += 0.1;
-        if (tokenMetaData.updateable) fee += 0.1;
+        let fee = configData.fee;
+        if (tokenMetaData.enableCreator) fee += configData.creatorFee;
+        if (tokenMetaData.mintable) fee += configData.mintableFee;
+        if (tokenMetaData.freezeable) fee += configData.freezeableFee;
+        if (tokenMetaData.updateable) fee += configData.updateableFee;
 
         const balance = await connection.getBalance(publicKey);
         console.log('balance', balance, fee);
@@ -138,7 +140,7 @@ const TokenCreation = ({
         transaction.add(
           SystemProgram.transfer({
             fromPubkey: publicKey,
-            toPubkey: new PublicKey(pubKey),
+            toPubkey: new PublicKey(configData.pubKey),
             lamports: Math.floor(fee * LAMPORTS_PER_SOL),
           })
         );
@@ -174,8 +176,8 @@ const TokenCreation = ({
         <div className='space-y-4 mb-12'>
           <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
           <p className='text-xs sm:text-xl text-dark-200 text-center'>
-            The cost of creating the token is <span className='text-secondary'>{initialFee} SOL</span>, which covers all fees
-            needed for the SPL Token creation.
+            The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers
+            all fees needed for the SPL Token creation.
           </p>
         </div>
       )}
@@ -198,13 +200,14 @@ const TokenCreation = ({
               <div className='space-y-4'>
                 <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
                 <p className='text-xs sm:text-xl text-dark-200 text-center'>
-                  The cost of creating the token is <span className='text-secondary'>{initialFee} SOL</span>, which covers all
-                  fees needed for the SPL Token creation.
+                  The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which
+                  covers all fees needed for the SPL Token creation.
                 </p>
               </div>
               <GradientButton
                 className='w-full sm:w-[200px] h-[54px] justify-self-center'
                 onClick={() => setCurrentProgress(currentProgress + 1)}
+                disabled={!publicKey || !connected}
               >
                 Create Token
               </GradientButton>
@@ -324,14 +327,22 @@ const TokenCreation = ({
                   </div>
                 </TextField>
               </div>
-              <ModifyCreatorInformation setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} />
+              <ModifyCreatorInformation
+                setTokenMetaData={setTokenMetaData}
+                tokenMetaData={tokenMetaData}
+                creatorFee={configData.creatorFee}
+              />
             </div>
           )}
 
           {/* Progress IV */}
           {currentProgress === 4 && (
             <div>
-              <RevokeAuthority setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} />
+              <RevokeAuthority
+                setTokenMetaData={setTokenMetaData}
+                tokenMetaData={tokenMetaData}
+                configData={configData}
+              />
             </div>
           )}
 
