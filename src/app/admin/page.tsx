@@ -3,9 +3,10 @@
 import { GradientButton } from '@/components/component/Button';
 import { cn } from '@/lib/utils';
 import { Check, ChevronRight, Copy, Edit, Save, X } from 'lucide-react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import copy from 'clipboard-copy';
 import { Configuration } from '@/lib/types';
+import { useStateContext } from '@/provider/StateProvider';
 
 const Page = () => {
   const [password, setPassword] = useState<string>('');
@@ -26,6 +27,44 @@ const Page = () => {
   });
 
   const [isCopied, setIsCopied] = useState('');
+
+  const { setConfigData, setLoading } = useStateContext();
+
+  useEffect(() => {
+    const fetchPublicKey = async () => {
+      setLoading(true); // Start loading
+      try {
+        const response = await fetch('/api/admin', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          // Handle HTTP errors (e.g., 404, 500)
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data && data.pubKey) {
+          console.log('Received pubKey:', data.pubKey, data.fee); // Log what you received
+          setConfigData(data);
+        } else {
+          // Handle cases where the response isn't what you expect
+          throw new Error('Invalid response format from /api/admin');
+        }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        console.error('Error fetching public key:', err);
+      } finally {
+        setLoading(false); // Stop loading, regardless of success/failure
+      }
+    };
+
+    fetchPublicKey();
+  }, [setConfigData, setLoading]);
 
   async function handleCopyClick(name: string, text: string) {
     try {
@@ -126,10 +165,10 @@ const Page = () => {
           <div className='flex gap-4 md:gap-8 items-center justify-between border w-full max-w-full py-2 px-4 md:px-8 overflow-hidden'>
             <p className='text-xs md:text-base whitespace-nowrap md:w-20 w-16'>Public Key</p>
             <div className='flex items-center justify-center gap-2 py-1 md:gap-4 w-full text-left text-xs md:text-base max-w-[65%] overflow-x-auto no-scrollbar'>
-              {isEdit === 'Public Key' ? (
+              {isEdit === 'pubKey' ? (
                 <input
                   className='text-gray-700 px-2 outline-none py-1 rounded-sm w-full'
-                  name='publicKey'
+                  name='pubKey'
                   value={adminData.pubKey || ''}
                   onChange={handleChange}
                 />
@@ -139,16 +178,16 @@ const Page = () => {
             </div>
             <div className='flex gap-2'>
               <button className='hover:text-gray-400 transition-colors'>
-                {isEdit === 'Public Key' ? (
+                {isEdit === 'pubKey' ? (
                   <X onClick={() => setIsEdit('')} />
-                ) : isCopied === 'Public Key' ? (
+                ) : isCopied === 'pubKey' ? (
                   <Check />
                 ) : (
-                  <Copy onClick={() => handleCopyClick('Public Key', adminData.pubKey || '')} />
+                  <Copy onClick={() => handleCopyClick('pubKey', adminData.pubKey || '')} />
                 )}
               </button>
               <button className='hover:text-gray-400 transition-colors'>
-                {isEdit === 'Public Key' ? (
+                {isEdit === 'pubKey' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
                   <Edit onClick={() => handleEdit('pubKey')} />

@@ -4,6 +4,8 @@ import { Configuration } from '@/lib/types';
 import React, { useContext, createContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
 
 interface StateContextInterface {
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
   configData: Configuration;
   setConfigData: Dispatch<SetStateAction<Configuration>>;
 }
@@ -11,16 +13,17 @@ interface StateContextInterface {
 export const StateContext = createContext<StateContextInterface | undefined>(undefined);
 
 export const StateContextProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [configData, setConfigData] = useState<Configuration>({
     fee: 0,
     mintableFee: 0,
     freezeableFee: 0,
     updateableFee: 0,
     creatorFee: 0,
-    pubKey: null
+    pubKey: null,
   });
   return (
-    <StateContext.Provider value={{ configData, setConfigData }}>{children}</StateContext.Provider>
+    <StateContext.Provider value={{ loading, setLoading, configData, setConfigData }}>{children}</StateContext.Provider>
   );
 };
 

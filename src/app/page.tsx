@@ -10,8 +10,7 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const { setConfigData } = useStateContext();
+  const { setConfigData, setLoading, loading } = useStateContext();
 
   useEffect(() => {
     const fetchPublicKey = async () => {
@@ -47,7 +46,7 @@ export default function Home() {
     };
 
     fetchPublicKey();
-  }, [setConfigData]);
+  }, [setConfigData, setLoading]);
 
   // When user click outsite of error modal
   useEffect(() => {
@@ -73,6 +72,8 @@ export default function Home() {
         <FAQ />
         <Help />
       </div>
+
+      {/* Error Modal */}
       {error && (
         <div
           className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
@@ -102,6 +103,8 @@ export default function Home() {
           {/* <div className='absolute inset-0 -z-10' /> */}
         </div>
       )}
+
+      {/* Loading Spinner */}
       {loading && (
         <div className='fixed inset-0 flex justify-center items-center bg-main bg-opacity-50 z-50'>
           <div className='animate-spin w-20 h-20 border-4 border-transparent border-t-white rounded-full' />
