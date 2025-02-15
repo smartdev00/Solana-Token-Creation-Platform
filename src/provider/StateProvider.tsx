@@ -1,21 +1,26 @@
 'use client';
 
+import { Configuration } from '@/lib/types';
 import React, { useContext, createContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
 
 interface StateContextInterface {
-  initialFee: number | null;
-  pubKey: string | null;
-  setInitialFee: Dispatch<SetStateAction<number | null>>;
-  setPubKey: Dispatch<SetStateAction<string | null>>;
+  configData: Configuration;
+  setConfigData: Dispatch<SetStateAction<Configuration>>;
 }
 
 export const StateContext = createContext<StateContextInterface | undefined>(undefined);
 
 export const StateContextProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-  const [initialFee, setInitialFee] = useState<number | null>(null);
-  const [pubKey, setPubKey] = useState<string | null>(null);
+  const [configData, setConfigData] = useState<Configuration>({
+    fee: 0,
+    mintableFee: 0,
+    freezeableFee: 0,
+    updateableFee: 0,
+    creatorFee: 0,
+    pubKey: null
+  });
   return (
-    <StateContext.Provider value={{ initialFee, pubKey, setPubKey, setInitialFee }}>{children}</StateContext.Provider>
+    <StateContext.Provider value={{ configData, setConfigData }}>{children}</StateContext.Provider>
   );
 };
 

@@ -12,7 +12,15 @@ export async function POST(req: NextRequest) {
     const auth = adminData?.password === data.password;
 
     console.log('request', adminData?.password, data);
-    return NextResponse.json({ success: auth, publicKey: adminData?.publicKey, fee: adminData?.fee });
+    return NextResponse.json({
+      success: auth,
+      pubKey: adminData?.publicKey,
+      fee: adminData?.fee,
+      mintableFee: adminData?.mintableFee,
+      freezeableFee: adminData?.freezeableFee,
+      updateableFee: adminData?.updateableFee,
+      creatorFee: adminData?.creatorFee,
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });

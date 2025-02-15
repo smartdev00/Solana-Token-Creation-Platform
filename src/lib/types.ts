@@ -45,6 +45,7 @@ export type RevokeAuthorityType = {
   price: number;
   logo: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
   type: keyof TokenMetaDataType;
+  feeType: keyof Configuration
 };
 
 export type PromoteItemType = {
@@ -57,3 +58,12 @@ export type PromoteItemType = {
   toColor: string;
   textColor: string;
 };
+
+export interface Configuration {
+  fee: number;
+  mintableFee: number;
+  freezeableFee: number;
+  updateableFee: number;
+  creatorFee: number;
+  pubKey: string | null;
+}

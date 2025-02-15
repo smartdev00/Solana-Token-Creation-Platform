@@ -11,11 +11,7 @@ import { useEffect, useState } from 'react';
 export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [configData, setConfigData] = useState({
-    pubKey: '',
-    fee: 0,
-  });
-  const { setInitialFee } = useStateContext();
+  const { setConfigData } = useStateContext();
 
   useEffect(() => {
     const fetchPublicKey = async () => {
@@ -37,8 +33,7 @@ export default function Home() {
 
         if (data && data.pubKey) {
           console.log('Received pubKey:', data.pubKey, data.fee); // Log what you received
-          setConfigData({ pubKey: data.pubKey, fee: data.fee });
-          setInitialFee(data.fee);
+          setConfigData(data);
         } else {
           // Handle cases where the response isn't what you expect
           throw new Error('Invalid response format from /api/admin');
@@ -52,7 +47,7 @@ export default function Home() {
     };
 
     fetchPublicKey();
-  }, [setInitialFee]);
+  }, [setConfigData]);
 
   // When user click outsite of error modal
   useEffect(() => {
@@ -73,7 +68,7 @@ export default function Home() {
   return (
     <div className='pt-[78px] md:pt-[93px]'>
       <TokenLaunchBanner />
-      <TokenCreation setError={setError} pubKey={configData.pubKey} initialFee={configData.fee} />
+      <TokenCreation setError={setError} />
       <div className='max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
         <FAQ />
         <Help />

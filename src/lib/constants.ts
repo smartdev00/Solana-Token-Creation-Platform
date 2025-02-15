@@ -81,6 +81,7 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     price: 0.1,
     logo: Lock,
     type: 'freezeable',
+    feeType: 'freezeableFee',
   },
   {
     id: 1,
@@ -89,6 +90,7 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     price: 0.1,
     logo: Coins,
     type: 'mintable',
+    feeType: 'mintableFee',
   },
   {
     id: 2,
@@ -97,6 +99,7 @@ export const revokeAuthorityItems: RevokeAuthorityType[] = [
     price: 0.1,
     logo: Pencil,
     type: 'updateable',
+    feeType: 'updateableFee',
   },
 ];
 

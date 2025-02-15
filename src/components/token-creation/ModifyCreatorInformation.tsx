@@ -5,9 +5,11 @@ import { ToggleButton } from '../component/Button';
 
 const ModifyCreatorInformation = ({
   tokenMetaData,
+  creatorFee,
   setTokenMetaData,
 }: {
   tokenMetaData: TokenMetaDataType;
+  creatorFee: number;
   setTokenMetaData: Dispatch<SetStateAction<TokenMetaDataType>>;
 }) => {
   function handleToggleClick() {
@@ -19,7 +21,7 @@ const ModifyCreatorInformation = ({
     <div className='border-t mt-8 pt-8'>
       <div className='grid grid-cols-12 items-center justify-between mb-4'>
         <div className='smd:hidden flex col-span-12 mb-3 items-center space-x-2'>
-          <span className='text-gray-400 text-sm'>(+0.1 SOL)</span>
+          <span className='text-gray-400 text-sm'>(+{creatorFee} SOL)</span>
           <ToggleButton selected={tokenMetaData.enableCreator} onClick={handleToggleClick} />
         </div>
         <div className='smd:col-span-10 col-span-12'>
@@ -29,7 +31,7 @@ const ModifyCreatorInformation = ({
           </p>
         </div>
         <div className='smd:flex hidden col-span-2 items-center space-x-2'>
-          <span className='text-gray-400 text-sm'>(+0.1 SOL)</span>
+          <span className='text-gray-400 text-sm'>(+{creatorFee} SOL)</span>
           <ToggleButton selected={tokenMetaData.enableCreator} onClick={handleToggleClick} />
         </div>
       </div>
