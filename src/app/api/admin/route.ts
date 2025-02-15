@@ -12,7 +12,12 @@ export async function POST(req: NextRequest) {
       {},
       {
         $set: {
-          ...data,
+          publicKey: data.pubKey,
+        fee: data.fee,
+        creatorFee: data.creatorFee,
+        updateableFee: data.updateableFee,
+        freezeableFee: data.freezeableFee,
+        mintableFee: data.mintableFee,
         },
       },
       { new: true }
