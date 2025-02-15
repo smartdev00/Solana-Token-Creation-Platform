@@ -1,10 +1,10 @@
-import './globals.css';
+import { Metadata } from 'next';
+import Script from 'next/script';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import AppWalletProvider from '@/provider/AppWalletProvider';
 import { StateContextProvider } from '@/provider/StateProvider';
-import Script from 'next/script';
-import { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'CoinForge',
