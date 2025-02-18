@@ -1,7 +1,7 @@
 'use client';
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { Globe, MessageCircle, Twitter } from 'lucide-react';
 import Progress from './Progress';
 import { GradientButton } from '../component/Button';
 import TextField from '../component/TextField';
@@ -10,22 +10,23 @@ import { TokenMetaDataType } from '@/lib/types';
 import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from '@solana/web3.js';
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, clusterApiUrl } from '@solana/web3.js';
 import { createTokenCreationTransaction } from '@/lib/web3';
 import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useStateContext } from '@/provider/StateProvider';
 
 const TokenCreation = ({
   setError,
+  setMintAddress,
 }: // pubKey,
 // initialFee,
 {
   // initialFee: number;
   // pubKey: string | null;
   setError: Dispatch<SetStateAction<string | null>>;
+  setMintAddress: Dispatch<SetStateAction<string | null>>;
 }) => {
   const [currentProgress, setCurrentProgress] = useState<number>(0);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
@@ -39,27 +40,9 @@ const TokenCreation = ({
     mintable: true,
     updateable: true,
   });
-  const [mintAddress, setMintAddress] = useState<string | null>('');
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const { publicKey, connected, sendTransaction } = useWallet();
   const { configData } = useStateContext();
-
-  // If user clicks outside of success model
-  useEffect(() => {
-    const handleClickSuccessOutside = (event: MouseEvent) => {
-      if ((event.target as HTMLElement).id === 'success-modal') {
-        setMintAddress(null);
-      }
-    };
-
-    if (mintAddress) {
-      document.addEventListener('mousedown', handleClickSuccessOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickSuccessOutside);
-    };
-  }, [mintAddress]);
 
   // If user clicks next or create token button
   async function handleNextOrCreateClick() {
@@ -72,8 +55,8 @@ const TokenCreation = ({
         if (!(publicKey && connected && configData.pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
-        const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
-        // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+        // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
         let fee = configData.fee;
         if (tokenMetaData.enableCreator) fee += configData.creatorFee;
@@ -83,7 +66,6 @@ const TokenCreation = ({
 
         const balance = await connection.getBalance(publicKey);
         console.log('balance', balance, fee);
-        fee = 0.01
 
         if (balance < fee * 1e9) {
           throw new Error(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
@@ -248,8 +230,8 @@ const TokenCreation = ({
                   placeholder='9'
                   name='decimals'
                   min={0}
-                  max={18}
-                  helperText='Enter a value between 0 and 18 decimals'
+                  max={9}
+                  helperText='Enter a value between 0 and 9 decimals'
                   value={tokenMetaData?.decimals}
                   setTokenMetaData={setTokenMetaData}
                 />
@@ -258,6 +240,7 @@ const TokenCreation = ({
                   placeholder='1000000000'
                   name='supply'
                   type='number'
+                  max={1e19 / 10 ** (tokenMetaData.decimals || 0)}
                   value={tokenMetaData?.supply}
                   helperText='Common supply is 1 billion'
                   setTokenMetaData={setTokenMetaData}
@@ -374,66 +357,6 @@ const TokenCreation = ({
           )}
         </div>
       </div>
-
-      {mintAddress && (
-        <div
-          className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'
-          id='success-modal'
-        >
-          <div className='bg-gray-900 rounded-2xl max-w-md w-full border border-gray-800 shadow-xl z-50'>
-            <div className='p-6'>
-              <div className='flex items-center gap-2 mb-6'>
-                <button
-                  className='h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center'
-                  onClick={() => setMintAddress(null)}
-                >
-                  <X className='text-green-500' />
-                </button>
-                <h2 className='text-xl font-semibold text-white'>Token Created Successfully!</h2>
-              </div>
-              <div className='space-y-6'>
-                <div className='space-y-2'>
-                  <label className='text-sm font-medium text-gray-400'>Token Address</label>
-                  <div className='flex items-center gap-2'>
-                    <code className='flex-1 p-2 rounded bg-gray-800 text-sm text-gray-300 overflow-x-auto'>
-                      {mintAddress}
-                    </code>
-                    <button className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'>
-                      <Copy className='h-4 w-4 text-gray-400' />
-                    </button>
-                  </div>
-                </div>
-                <div className='space-y-4'>
-                  <Link
-                    href={`https://explorer.solana.com/address/${mintAddress}`}
-                    target='_blank'
-                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                  >
-                    <ExternalLink className='h-4 w-4 text-gray-400' /> View on Explorer
-                  </Link>
-                  <Link
-                    href={`https://solscan.io/token/${mintAddress}`}
-                    target='_blank'
-                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                  >
-                    <ExternalLink className='h-4 w-4 text-gray-400' /> View on Solscan
-                  </Link>
-                  <Link
-                    href='https://raydium.io/liquidity/create-pool/'
-                    target='_blank'
-                    className='w-full flex items-center justify-center gap-2 py-2 px-4 rounded border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors'
-                  >
-                    <ExternalLink className='h-4 w-4 text-gray-400' /> Create Liquidity Pool
-                  </Link>
-                </div>
-                <div className='border-t border-gray-800 pt-4'>
-                  <p className='text-sm text-gray-400'>Add this token to your wallet using the token address above.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
