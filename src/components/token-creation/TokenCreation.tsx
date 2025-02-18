@@ -10,7 +10,7 @@ import { TokenMetaDataType } from '@/lib/types';
 import ModifyCreatorInformation from './ModifyCreatorInformation';
 import RevokeAuthority from './RevokeAuthority';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram, clusterApiUrl } from '@solana/web3.js';
+import { Connection, LAMPORTS_PER_SOL, PublicKey, SystemProgram } from '@solana/web3.js';
 import { createTokenCreationTransaction } from '@/lib/web3';
 import { uploadToIPFS } from '@/lib/ipfsUpload';
 import { AxiosProgressEvent } from 'axios';
@@ -55,8 +55,8 @@ const TokenCreation = ({
         if (!(publicKey && connected && configData.pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
-        // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
-        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+        const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
+        // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
         let fee = configData.fee;
         if (tokenMetaData.enableCreator) fee += configData.creatorFee;
