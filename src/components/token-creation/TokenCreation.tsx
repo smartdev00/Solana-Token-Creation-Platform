@@ -55,8 +55,8 @@ const TokenCreation = ({
         if (!(publicKey && connected && configData.pubKey && sendTransaction)) {
           throw new Error(`Please connect wallet!`);
         }
-        // const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
-        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+        const connection = new Connection(process.env.NEXT_PUBLIC_RPC_URL || '', 'confirmed');
+        // const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
         let fee = configData.fee;
         if (tokenMetaData.enableCreator) fee += configData.creatorFee;
