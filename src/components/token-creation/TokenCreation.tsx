@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
+import { Check, Copy, ExternalLink, Globe, MessageCircle, Twitter, X } from 'lucide-react';
 import Progress from './Progress';
 import { GradientButton } from '../component/Button';
 import TextField from '../component/TextField';
@@ -17,6 +17,7 @@ import { AxiosProgressEvent } from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useStateContext } from '@/provider/StateProvider';
+import copy from 'clipboard-copy';
 
 const TokenCreation = ({
   setError,
@@ -28,6 +29,7 @@ const TokenCreation = ({
   setError: Dispatch<SetStateAction<string | null>>;
 }) => {
   const [currentProgress, setCurrentProgress] = useState<number>(0);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [tokenMetaData, setTokenMetaData] = useState<TokenMetaDataType>({
     name: '',
     symbol: '',
@@ -61,6 +63,21 @@ const TokenCreation = ({
     };
   }, [mintAddress]);
 
+  async function handleCopyClick() {
+    try {
+      if (!mintAddress) {
+        return;
+      }
+      await copy(mintAddress);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 1000); // Reset "Copied!" state after 2 seconds
+    } catch (error) {
+      console.error('Failed to copy text to clipboard', error);
+    }
+  }
+
   // If user clicks next or create token button
   async function handleNextOrCreateClick() {
     try {
@@ -83,7 +100,6 @@ const TokenCreation = ({
 
         const balance = await connection.getBalance(publicKey);
         console.log('balance', balance, fee);
-        fee = 0.01
 
         if (balance < fee * 1e9) {
           throw new Error(`Insufficient funds for transaction. Required balance: ${fee.toFixed(4)} SOL`);
@@ -398,8 +414,15 @@ const TokenCreation = ({
                     <code className='flex-1 p-2 rounded bg-gray-800 text-sm text-gray-300 overflow-x-auto'>
                       {mintAddress}
                     </code>
-                    <button className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'>
-                      <Copy className='h-4 w-4 text-gray-400' />
+                    <button
+                      className='shrink-0 p-2 rounded border border-gray-700 hover:bg-gray-800 transition-colors'
+                      onClick={handleCopyClick}
+                    >
+                      {isCopied ? (
+                        <Check className='h-4 w-4 text-gray-400' />
+                      ) : (
+                        <Copy className='h-4 w-4 text-gray-400' />
+                      )}
                     </button>
                   </div>
                 </div>
