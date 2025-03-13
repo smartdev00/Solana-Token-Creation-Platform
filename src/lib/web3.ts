@@ -51,13 +51,6 @@ export async function createTokenCreationTransaction(
     // Minimum lamports required for Mint Account
     const lamports = await connection.getMinimumBalanceForRentExemption(mintLen + metadataExtension + metadataLen);
 
-    // const setComputeUnitPriceInstruction = ComputeBudgetProgram.setComputeUnitPrice({
-    //   microLamports: 1000000,
-    // });
-
-    // const setComputeUnitLimitInstruction = ComputeBudgetProgram.setComputeUnitLimit({
-    //   units: 500000
-    // })
     // Instruction to invoke System Program to create new account
     const createAccountInstruction = SystemProgram.createAccount({
       fromPubkey: publicKey, // Account that will transfer lamports to created account
