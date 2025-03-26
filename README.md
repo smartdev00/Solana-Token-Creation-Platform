@@ -1,4 +1,4 @@
-# Solana Token 2022 Creation Platform: Value Proposition  
+# Solana Token 2022 Creation Platform: [Demo](https://solana-token-creation-platform-ncik.vercel.app)
 
 ## 🚀 Key Use Cases  
 - **Creator Economy**  
