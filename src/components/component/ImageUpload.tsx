@@ -59,7 +59,7 @@ const ImageUpload = ({
         onClick={handleClickDiv}
       >
         {!!tokenMetaData.logo?.name === false ? (
-          <Upload className='text-gray-400 w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4' />
+          <Upload className='text-text-secondary w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4' />
         ) : image ? (
           <Image
             alt='token logo preview'
@@ -74,12 +74,12 @@ const ImageUpload = ({
 
         {!!tokenMetaData.logo?.name === false ? (
           <div>
-            <p className='text-gray-300 font-medium text-sm md:text-base'>Click to upload or drag and drop</p>
-            <p className='text-gray-300 font-medium text-sm md:text-base'>SVG, PNG, JPG or GIF (MAX. 400 &times; 400)</p>
+            <p className='text-text-secondary font-medium text-sm md:text-base'>Click to upload or drag and drop</p>
+            <p className='text-text-secondary font-medium text-sm md:text-base'>SVG, PNG, JPG or GIF (MAX. 400 &times; 400)</p>
           </div>
         ) : (
           <div className='space-y-2 mt-2'>
-            <p className='text-gray-300 text-sm md:text-base'>
+            <p className='text-text-secondary text-sm md:text-base'>
               {image ? tokenMetaData.logo.name : 'Uploading image...'}
             </p>
           </div>

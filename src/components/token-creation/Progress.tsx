@@ -6,7 +6,7 @@ const ProgressItem = ({ current, value }: { current: number; value: ProgressType
   return (
     <h4
       className={`flex items-center px-4 rounded-[30px] text-xl font-normal border ${
-        Number(value.id) === current ? 'text-secondary border-secondary' : 'text-white border-[#3B4457]'
+        Number(value.id) === current ? 'text-secondary border-secondary' : 'text-text-main border-[#3B4457]'
       }  h-12 transition-all`}
     >
       {value.id}

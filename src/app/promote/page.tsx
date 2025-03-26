@@ -8,7 +8,7 @@ const Page = () => {
         <GradientTypography variant='h1' className='text-4xl sm:text-6xl mb-4'>
           Promote Your Token
         </GradientTypography>
-        <p className='text-gray-300 max-w-2xl mx-auto'>
+        <p className='text-text-secondary max-w-2xl mx-auto'>
           Boost your token&apos;s visibility with our premium promotion spots. Each spot is available for 30 minutes.
         </p>
       </div>

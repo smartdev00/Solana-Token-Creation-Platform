@@ -34,14 +34,14 @@ const PromoteItem = ({ promote }: { promote: PromoteItemType }) => {
 
             {/* Price Set */}
             <div className='bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-lg p-4 mb-6 w-full'>
-              <div className='text-2xl font-bold text-white mb-1'>{promote.price} SOL</div>
+              <div className='text-2xl font-bold text-text-main mb-1'>{promote.price} SOL</div>
             </div>
 
             {/* Benefits Set */}
             <div className='space-y-3 text-left w-full mb-6'>
               {promote.benefits.map((benefit, index) => {
                 return (
-                  <div className='flex items-center text-gray-300 text-sm' key={index}>
+                  <div className='flex items-center text-text-secondary text-sm' key={index}>
                     <Check className={`w-5 h-5 mr-3 flex-shrink-0 ${promote.textColor}`} />
                     <span>{benefit}</span>
                   </div>
@@ -52,7 +52,7 @@ const PromoteItem = ({ promote }: { promote: PromoteItemType }) => {
             {/* Purchase Button */}
             <button
               className={cn(
-                'w-full px-6 py-3 rounded-lg text-white font-medium transition-all transform',
+                'w-full px-6 py-3 rounded-lg text-text-main font-medium transition-all transform',
                 `bg-gradient-to-r ${promote.fromColor} ${promote.id === 3 ? 'to-blue-500' : 'to-purple-500'}`,
                 'hover:from-blue-600 hover:to-purple-600 hover:shadow-lg hover:shadow-purple-500/30 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
               )}

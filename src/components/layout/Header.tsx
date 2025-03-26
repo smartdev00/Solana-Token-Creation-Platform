@@ -67,7 +67,7 @@ const Header = () => {
             )}
             <div className='flex w-full smd:hidden justify-end'>
               <Menu
-                className='text-gray-400 hover:text-white transition-colors mr-2'
+                className='text-text-secondary hover:text-text-main transition-colors mr-2'
                 onClick={() => setOpenNavModal(!openNavModal)}
               />
             </div>
@@ -90,7 +90,7 @@ const Header = () => {
             </div>
           </div>
           {advert && (
-            <div className='relative mt-2 text-center py-2 text-white rounded-md bg-gradient-to-r from-[#2A39FF] to-[#5B1B8C]'>
+            <div className='relative mt-2 text-center py-2 text-text-main rounded-md bg-gradient-to-r from-[#2A39FF] to-[#5B1B8C]'>
               <p className='md:mx-16 ml-2 mr-8 md:text-sm text-xs'>LAUNCH TOKEN ONLY {configData.fee} SOL - 50% OFF</p>
               <X
                 className='absolute md:right-5 right-2 top-1/2 transform -translate-y-1/2 cursor-pointer'

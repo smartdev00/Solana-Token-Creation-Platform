@@ -14,8 +14,8 @@ const RevokeAuthority = ({
 }) => {
   return (
     <div className=''>
-      <h3 className='text-lg text-gray-200 font-medium mb-4'>Revoke Authorities</h3>
-      <p className='text-gray-400 text-sm mb-6'>
+      <h3 className='text-lg text-text-secondary font-medium mb-4'>Revoke Authorities</h3>
+      <p className='text-text-secondary text-sm mb-6'>
         Solana Token has 3 authorities: Freeze Authority, Mint Authority, and Update Authority. Revoke them to attract
         more investors. We highly recommend enabling these 3 options for gaining more trust.
       </p>

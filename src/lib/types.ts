@@ -5,7 +5,7 @@ export type HelpType = {
   id: number;
   title: string;
   text: string;
-  img: string;
+  img: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>> | string;
 };
 
 export type FAQType = {

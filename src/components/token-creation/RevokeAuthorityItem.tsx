@@ -27,7 +27,7 @@ const RevokeAuthorityItem = ({
     <div
       className={cn(
         `${!!tokenMetaData[item.type] ? 'bg-gradient-to-tr from-cyan-400 to-purple-500' : 'bg-gradient-to-tr'}`,
-        'overflow-hidden font-medium text-white transition-all duration-300 ease-out group',
+        'overflow-hidden font-medium text-text-main transition-all duration-300 ease-out group',
         'relative rounded-2xl flex items-start justify-center p-6',
         'hover:from-cyan-400 hover:to-purple-500'
       )}
@@ -38,11 +38,11 @@ const RevokeAuthorityItem = ({
         <div className='flex justify-between items-center w-full mb-4'>
           <span className='text-[#C0A3FF]'>+{price} SOL</span>
           <div className='border rounded-lg p-2.5 transition-all group-hover:border-cyan-500 group-hover:shadow-[0_0_10px_rgba(59,130,246,.5)]'>
-            {<item.logo className='text-[#A4B0C8]' width={20} height={20} />}
+            {<item.logo className='text-text-secondary' width={20} height={20} />}
           </div>
         </div>
         <h4 className='font-medium text-gray-100 mb-2 transition-colors group-hover:text-cyan-500'>{item.title}</h4>
-        <p className='text-gray-400 text-sm transition-colors group-hover:text-gray-300'>{item.content}</p>
+        <p className='text-text-secondary text-sm transition-colors group-hover:text-text-secondary'>{item.content}</p>
         <SelectButton selected={!!tokenMetaData[item.type]} onClick={handleItemClick}>
           {!!tokenMetaData[item.type] ? 'Selected' : 'Select to Revoke'}
         </SelectButton>

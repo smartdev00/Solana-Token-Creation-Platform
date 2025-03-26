@@ -150,7 +150,7 @@ const Page = () => {
   }
 
   return (
-    <section className='text-gray-300 min-h-[calc(100vh-300px)] flex justify-center items-center flex-col gap-4 md:gap-8 pt-[78px] md:pt-[93px]'>
+    <section className='text-text-secondary min-h-[calc(100vh-300px)] flex justify-center items-center flex-col gap-4 md:gap-8 pt-[78px] md:pt-[93px]'>
       <h2
         className={cn(
           'text-center text-transparent text-3xl md:text-5xl mt-4 md:mt-6 font-medium',
@@ -177,7 +177,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'pubKey' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'pubKey' ? (
@@ -186,7 +186,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('pubKey', adminData.pubKey || '')} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'pubKey' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
@@ -212,7 +212,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'fee' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'fee' ? (
@@ -221,7 +221,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('fee', adminData.fee.toString())} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'fee' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
@@ -247,7 +247,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'creatorFee' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'creatorFee' ? (
@@ -256,7 +256,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('creatorFee', adminData.creatorFee.toString())} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'creatorFee' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
@@ -282,7 +282,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'updateableFee' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'updateableFee' ? (
@@ -291,7 +291,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('updateableFee', adminData.updateableFee.toString())} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'updateableFee' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
@@ -317,7 +317,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'mintableFee' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'mintableFee' ? (
@@ -326,7 +326,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('mintableFee', adminData.mintableFee.toString())} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'mintableFee' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (
@@ -352,7 +352,7 @@ const Page = () => {
               )}
             </div>
             <div className='flex gap-2'>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'freezeableFee' ? (
                   <X onClick={() => setIsEdit('')} />
                 ) : isCopied === 'freezeableFee' ? (
@@ -361,7 +361,7 @@ const Page = () => {
                   <Copy onClick={() => handleCopyClick('freezeableFee', adminData.freezeableFee.toString())} />
                 )}
               </button>
-              <button className='hover:text-gray-400 transition-colors'>
+              <button className='hover:text-text-secondary transition-colors'>
                 {isEdit === 'freezeableFee' ? (
                   <Save onClick={handleUpdateAdminData} />
                 ) : (

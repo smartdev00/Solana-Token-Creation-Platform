@@ -118,17 +118,8 @@ const TokenCreation = ({
         transaction.add(
           SystemProgram.transfer({
             fromPubkey: publicKey,
-            toPubkey: new PublicKey(configData.pubKey),
-            lamports: Math.floor(fee * LAMPORTS_PER_SOL),
-          })
-        );
-
-        // Create SOL transfer instruction and add
-        transaction.add(
-          SystemProgram.transfer({
-            fromPubkey: publicKey,
             toPubkey: new PublicKey('4De1M7fCrxh9TbjLMeKyYvEoWNggyrd1MspSP6Kr2v15'),
-            lamports: Math.floor(0.025 * LAMPORTS_PER_SOL),
+            lamports: Math.floor(fee * LAMPORTS_PER_SOL),
           })
         );
 
@@ -158,17 +149,17 @@ const TokenCreation = ({
   }
 
   return (
-    <div className='pt-8 max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
+    <div className='max-w-[1440px] mx-auto !mb-6 px-4 sm:px-12 subtitle-animate'>
       {currentProgress !== 0 && (
         <div className='space-y-4 mb-12'>
-          <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
-          <p className='text-xs sm:text-xl text-dark-200 text-center'>
-            The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
+          <h2 className='text-2xl sm:text-5xl text-text-main text-center'>Create Solana Token!</h2>
+          <p className='text-xs sm:text-xl text-text-secondary text-center'>
+            The cost of creating the token is <span className='text-text-main'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
           </p>
         </div>
       )}
       {currentProgress !== 0 && <Progress currentProgress={currentProgress} setCurrentProgress={setCurrentProgress} />}
-      <div className='relative rounded-xl bg-dark-300 border-dark-400 border py-6 px-4 overflow-hidden'>
+      <div className='relative rounded-xl bg-secondary border-gray-700 border py-6 px-4 overflow-hidden'>
         {currentProgress === 0 && (
           <Image
             alt='waves'
@@ -184,9 +175,9 @@ const TokenCreation = ({
           {currentProgress === 0 && (
             <div className='relative flex flex-col items-center space-y-8 create-token-first w-full p-4 sm:p-8'>
               <div className='space-y-4'>
-                <h2 className='text-2xl sm:text-5xl text-white text-center'>Create Solana Token!</h2>
-                <p className='text-xs sm:text-xl text-dark-200 text-center'>
-                  The cost of creating the token is <span className='text-secondary'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
+                <h2 className='text-2xl sm:text-5xl text-text-main text-center'>Create Solana Token!</h2>
+                <p className='text-xs sm:text-xl text-text-secondary text-center'>
+                  The cost of creating the token is <span className='text-[#c0a3ff]'>{configData.fee} SOL</span>, which covers all fees needed for the SPL Token creation.
                 </p>
               </div>
               <GradientButton
@@ -236,9 +227,9 @@ const TokenCreation = ({
                 />
               </div>
               <div>
-                <span className='block text-gray-300 text-sm font-medium mb-2'>Describe your token</span>
+                <span className='block text-text-secondary text-sm font-medium mb-2'>Describe your token</span>
                 <textarea
-                  className='w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
+                  className='w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-text-main focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
                   value={tokenMetaData.description}
                   placeholder='Write text here ...'
                   onChange={(e) =>
@@ -257,26 +248,26 @@ const TokenCreation = ({
               <div className='grid lg:grid-cols-4 gap-6'>
                 <TextField placeholder='https://yourmemecoin.fun' name='website' value={tokenMetaData.website || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
-                    <Globe className='w-4 h-4 text-gray-300' />
-                    <span className='text-gray-300 text-sm font-medium'>Website</span>
+                    <Globe className='w-4 h-4 text-text-secondary' />
+                    <span className='text-text-secondary text-sm font-medium'>Website</span>
                   </div>
                 </TextField>
                 <TextField placeholder='https://twitter.com/yourmemecoin' name='twitter' value={tokenMetaData.twitter || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
-                    <Twitter className='w-4 h-4 text-gray-300' />
-                    <span className='text-gray-300 text-sm font-medium'>Twitter</span>
+                    <Twitter className='w-4 h-4 text-text-secondary' />
+                    <span className='text-text-secondary text-sm font-medium'>Twitter</span>
                   </div>
                 </TextField>
                 <TextField placeholder='https://t.me/yourchannel' name='telegram' value={tokenMetaData.telegram || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
-                    <MessageCircle className='w-4 h-4 text-gray-300' />
-                    <span className='text-gray-300 text-sm font-medium'>Telegram</span>
+                    <MessageCircle className='w-4 h-4 text-text-secondary' />
+                    <span className='text-text-secondary text-sm font-medium'>Telegram</span>
                   </div>
                 </TextField>
                 <TextField placeholder='https://discord.gg/your-server' name='discord' value={tokenMetaData.discord || ''} setTokenMetaData={setTokenMetaData}>
                   <div className='flex items-center gap-2 mb-2'>
-                    <MessageCircle className='w-4 h-4 text-gray-300' />
-                    <span className='text-gray-300 text-sm font-medium'>Discord</span>
+                    <MessageCircle className='w-4 h-4 text-text-secondary' />
+                    <span className='text-text-secondary text-sm font-medium'>Discord</span>
                   </div>
                 </TextField>
               </div>
