@@ -1,4 +1,4 @@
-import { Coins, Lock, Pencil } from 'lucide-react';
+import { Coins, Lock, Pencil, Image, Edit, MousePointer  } from 'lucide-react';
 import { FAQType, HelpType, ProgressType, PromoteItemType, RevokeAuthorityType } from './types';
 
 export const faqs: FAQType[] = [
@@ -49,28 +49,28 @@ export const helps: HelpType[] = [
   },
   { 
     id: 3, 
-    title: 'Select Decimal Precision', 
-    text: 'Choose how precise your token can be when used. 0 for Whitelist Token, 6 for utility token',
-    img: '/mouse-pointer.svg'
+    title: 'Upload an Image', 
+    text: 'This will represent your token visually. Make sure the image is clear and in PNG format for the best quality',
+    img: Image
   },
   { 
     id: 4, 
-    title: 'Write the Description', 
-    text: 'Write a brief description for your SPL Token. Keep it clear and simple to help others understand what your token represents',
-    img: '/edit.svg'
+    title: 'Select Decimal Precision', 
+    text: 'Choose how precise your token can be when used. 0 for Whitelist Token, 6 for utility token',
+    img: MousePointer
   },
   { 
     id: 5, 
-    title: 'Upload an Image', 
-    text: 'This will represent your token visually. Make sure the image is clear and in PNG format for the best quality',
-    img: '/image.svg'
+    title: 'Set the Supply and Save!', 
+    text: 'Set the total supply for your token. You can choose any amount, depending on your token\'s purpose. Your token is saved now!',
+    img: Edit
   },
   { 
     id: 6, 
-    title: 'Set the Supply and Save!', 
-    text: 'Set the total supply for your token. You can choose any amount, depending on your token\'s purpose. Your token is saved now!',
+    title: 'Write the Description', 
+    text: 'Write a brief description for your Token 2022. Keep it clear and simple to help others understand what your token represents',
     img: '/'
-  }
+  },
 ];
 
 export const revokeAuthorityItems: RevokeAuthorityType[] = [

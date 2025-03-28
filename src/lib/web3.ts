@@ -106,14 +106,19 @@ export async function createTokenCreationTransaction(
       tokenMint,
       TOKEN_2022_PROGRAM_ID
     );
-    console.log('ATA', newATA.toString());
+    console.log(
+      'ATA',
+      newATA.toString(),
+      'total supply',
+      BigInt(tokenMetaData.supply) * BigInt(10 ** tokenMetaData.decimals)
+    );
 
     // Create the mint to instruction
     const mintToInstruction = createMintToInstruction(
       tokenMint,
       newATA,
       publicKey,
-      Math.floor(tokenMetaData.supply * 10 ** tokenMetaData.decimals),
+      BigInt(tokenMetaData.supply) * BigInt(10 ** tokenMetaData.decimals),
       undefined,
       TOKEN_2022_PROGRAM_ID
     );

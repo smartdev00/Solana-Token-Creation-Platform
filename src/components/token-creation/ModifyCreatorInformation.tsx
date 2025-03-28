@@ -21,17 +21,17 @@ const ModifyCreatorInformation = ({
     <div className='border-t mt-8 pt-8'>
       <div className='grid grid-cols-12 items-center justify-between mb-4'>
         <div className='smd:hidden flex col-span-12 mb-3 items-center space-x-2'>
-          <span className='text-gray-400 text-sm'>(+{creatorFee} SOL)</span>
+          <span className='text-text-secondary text-sm'>(+{creatorFee} SOL)</span>
           <ToggleButton selected={tokenMetaData.enableCreator} onClick={handleToggleClick} />
         </div>
         <div className='smd:col-span-10 col-span-12'>
-          <h3 className='text-lg text-gray-200 font-medium'>Modify Creator Information</h3>
-          <p className='text-gray-400 text-sm mt-1'>
+          <h3 className='text-lg text-text-secondary font-medium'>Modify Creator Information</h3>
+          <p className='text-text-secondary text-sm mt-1'>
             Change the information of the creator in the metadata. By default, it is CoinForge.
           </p>
         </div>
         <div className='smd:flex hidden col-span-2 items-center space-x-2'>
-          <span className='text-gray-400 text-sm'>(+{creatorFee} SOL)</span>
+          <span className='text-text-secondary text-sm'>(+{creatorFee} SOL)</span>
           <ToggleButton selected={tokenMetaData.enableCreator} onClick={handleToggleClick} />
         </div>
       </div>

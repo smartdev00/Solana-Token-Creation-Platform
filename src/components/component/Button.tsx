@@ -18,7 +18,7 @@ export const LinkButton = ({ children, href, soon }: { children: ReactNode; href
               {children}
             </p>
             {soon?
-              <span className='flex px-2 rounded-xl md:text-xs text-[10px] text-white text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
+              <span className='flex px-2 rounded-xl md:text-xs text-[10px] text-text-main text-opacity-80 bg-gradient-to-r from-[#6159FF] to-[#A440F2]'>
                 Soon
               </span>
               :<></>}
@@ -59,7 +59,7 @@ export const GradientBorderButton = ({
       )}
       onClick={onClick}
     >
-      <span className='px-8 py-3 bg-main rounded-2xl text-white font-medium'>{children}</span>
+      <span className='px-8 py-3 bg-main rounded-2xl text-text-main font-medium'>{children}</span>
     </button>
   );
 };
@@ -108,7 +108,7 @@ export const SelectButton = ({
         `${
           selected
             ? 'border-cyan-500 text-cyan-500 bg-gradient-to-r from-cyan-500/30 to-purple-500/20'
-            : 'border-gray-400 text-gray-400 bg-main/80'
+            : 'border-gray-400 text-text-secondary bg-main/80'
         }`,
         `select-button border px-4 py-2 text-sm rounded-lg mt-4 w-full`
       )}

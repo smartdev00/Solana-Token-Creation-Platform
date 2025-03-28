@@ -41,10 +41,10 @@ const TextField = ({
   }
   return (
     <div>
-      {label && <label className='block text-gray-300 text-sm font-medium mb-2'>{label}</label>}
+      {label && <label className='block text-text-secondary text-sm font-medium mb-2'>{label}</label>}
       {children}
       <input
-        className='w-full bg-gray-700 border border-dark-500 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-white placeholder:text-dark-200 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
+        className='w-full bg-gray-700 border border-dark-500 rounded-lg px-3 md:px-4 py-2 md:py-2.5 text-text-main placeholder:text-dark-200 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition'
         type={type}
         name={name}
         value={value}
