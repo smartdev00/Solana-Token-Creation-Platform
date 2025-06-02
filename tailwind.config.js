@@ -16,7 +16,7 @@ module.exports = {
         'blue-custom': '#2A39FF',
         'purple-custom': '#5B1B8C',
         'text-main': '#ffffff',
-        'text-secondary': '#a4b0c8 ',
+        'text-secondary': '#ffffff ',
       },
       animation: {
         'background-position-spin': 'background-position-spin 3000ms infinite alternate',
